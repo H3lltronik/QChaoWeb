@@ -1,7 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home.vue';
+
 import Register from './components/register.vue';
+import MainPage from './components/mainPage.vue';
+import MainForum from './components/Forum/mainForum.vue';
 
 Vue.use(Router);
 
@@ -12,12 +14,17 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Register,
+      component: MainPage,
     },
     {
       path: '/register',
       name: 'Register',
       component: Register,
-    }
-  ]
-})
+    },
+    {
+      path: '/forum',
+      name: 'Foro',
+      component: MainForum,
+    },
+  ],
+});
