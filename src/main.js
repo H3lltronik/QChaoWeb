@@ -9,8 +9,14 @@ import Message from 'vue-material-design-icons/Message.vue'
 import AlertBox from 'vue-material-design-icons/AlertBox.vue'
 import ThumbUp from 'vue-material-design-icons/ThumbUp.vue'
 import Comment from 'vue-material-design-icons/Comment.vue'
+import Crosshairs from 'vue-material-design-icons/Crosshairs.vue'
+import ClockOutline from 'vue-material-design-icons/ClockOutline.vue'
+import TicketConfirmation from 'vue-material-design-icons/TicketConfirmation.vue'
+import StarOutline from 'vue-material-design-icons/StarOutline.vue'
+
 // Custom components
 import ShitpostBase from './components/shitpostBase.vue';
+import EventBase from './components/Eventos/eventBase.vue';
 import LeftAside from './components/leftAside.vue';
 import RightAside from './components/rightAside.vue';
 import NavBar from './components/Common/navBar.vue';
@@ -32,6 +38,7 @@ Vue.component('shitpost-base', ShitpostBase);
 Vue.component('left-aside', LeftAside);
 Vue.component('right-aside', RightAside);
 Vue.component('navbar-component', NavBar);
+Vue.component('event-base', EventBase);
 
 //Iconos
 Vue.component('menu-icon', Settings);
@@ -40,6 +47,10 @@ Vue.component('message-icon', Message);
 Vue.component('alertbox-icon', AlertBox);
 Vue.component('thumbup-icon', ThumbUp);
 Vue.component('comment-icon', Comment);
+Vue.component('crosshairs-icon', Crosshairs);
+Vue.component('clockoutline-icon', ClockOutline);
+Vue.component('ticketconfirmation-icon', TicketConfirmation);
+Vue.component('staroutline-icon', StarOutline);
 
 new Vue({
   router,

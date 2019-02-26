@@ -4,6 +4,7 @@ import Router from 'vue-router';
 import Register from './components/register.vue';
 import MainPage from './components/mainPage.vue';
 import MainForum from './components/Forum/mainForum.vue';
+import MainEvents from './components/Eventos/eventsMain.vue';
 
 Vue.use(Router);
 
@@ -25,6 +26,11 @@ export default new Router({
       path: '/forum',
       name: 'Foro',
       component: MainForum,
+    },
+    {
+      path: '/events',
+      name: 'Eventos',
+      component: MainEvents,
     },
   ],
 });

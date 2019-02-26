@@ -9,8 +9,7 @@
                             <left-aside></left-aside>
                         </b-col>
                         <b-col md="6" >
-                            <shitpost-base></shitpost-base>
-                            
+                            <event-base></event-base>
                         </b-col>
                         <b-col md="3">
                             <right-aside></right-aside>
@@ -24,14 +23,7 @@
 
 <script>
 export default {
-    data () {
-        return {
-
-        }
-    },
-    methods: {
-
-    }
+    
 }
 </script>
 

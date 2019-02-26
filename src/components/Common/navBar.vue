@@ -4,7 +4,7 @@
         <!-- El fixed="top" es para que se quede pegada arriba aunque baje por la pagina, siempre se muestra -->
         <b-navbar type="dark" variant="dark" fixed="top">
             <!-- navbar-bran es el componente para el logo o nombre que va en la barra de tareas de arriba -->
-            <b-navbar-brand href="#">QChaoWeb</b-navbar-brand>
+            <b-navbar-brand href="#" @click="goToRouter('')">QChaoWeb</b-navbar-brand>
             <!-- Los elementos del navbar se tiene que agrupar y separar por navbar-nav, en este caso
                 el componente que tiene agrupado es un nav-form para la barra de busqueda-->
             <b-navbar-nav class="ml-auto">
@@ -15,12 +15,12 @@
             </b-navbar-nav>
             <b-navbar-nav>
                 <b-nav-item-dropdown text="Inicio" right class="dropdown">
-                    <b-dropdown-item class="dropdown-menu">
+                    <b-dropdown-item class="dropdown-menu" @click="goToRouter('forum')">
                         Foro
                     </b-dropdown-item>
                 </b-nav-item-dropdown>
                 <b-nav-item>Tendencias</b-nav-item>
-                <b-nav-item>Eventos</b-nav-item>
+                <b-nav-item @click="goToRouter('events')">Eventos</b-nav-item>
                 <b-nav-item>Soporte</b-nav-item>
                 <!-- Iconos -->
                 <b-nav-item>
@@ -40,6 +40,23 @@
     </div>
 </template>
 
-<style lang="">
-    
+<script>
+export default {
+    data () {
+        return {
+
+        }
+    },
+    methods: {
+        goToRouter (route) {
+            this.$router.push("/"+route)
+        }
+    }
+}
+</script>
+
+<style>
+    .dropdown:hover > .dropdown-menu {
+        display: block;
+    }
 </style>
