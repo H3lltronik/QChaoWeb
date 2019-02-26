@@ -11,7 +11,7 @@
                                 <b-row class="noPadding">
                                     <b-col md="12" class="noPadding">
                                         <b-row>
-                                            <b-card-img src="https://i.pinimg.com/474x/55/89/7a/55897a1249d5db035b6a68c37340f364--goddesses-icons.jpg"
+                                            <b-card-img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/intermediary/f/68f46e97-6a91-4028-848f-1f2a6ff6716c/d53mgu0-5e5f7af6-ba42-403a-a9e7-7c4fec32fd43.jpg/v1/fill/w_783,h_1021,q_70,strp/amlito_amoroso_lopez_obrador_by_marionette2007_d53mgu0-pre.jpg"
                                                 left height="50"></b-card-img>
                                             <b-col>
                                                 <b-row>
@@ -31,8 +31,8 @@
                                             Soy bien webo pero no lo admito
                                         </b-card-text>
                                         <b-row class="noPadding">
-                                            <b-col md="12" style="overflow: hidden; height: 500px;" class="noPadding">
-                                                <img class="img-fluid" src="https://homuapp.000webhostapp.com/Imagenes/4-1-2019-22-24-45.jpg" alt="">
+                                            <b-col md="12" style="overflow: hidden; height: 500px;" class="noPadding text-center">
+                                                <img class="img-fluid" src="https://img.taxyc.com/1/v/t1.0-9/s720x720/22448226_1903266053328194_3187917734065479314_n.jpg?_nc_cat=102&_nc_ht=scontent.xx&oh=936a100756fbcfcfd81cb6cf7fc6980c&oe=5CCCC245" alt="">
                                             </b-col>
                                         </b-row>
                                     </b-col>
@@ -53,7 +53,7 @@
                                         <b-row>
                                             <b-col md="1" class="">
                                                 <img class="" height="40"
-                                                    src="https://i.pinimg.com/474x/55/89/7a/55897a1249d5db035b6a68c37340f364--goddesses-icons.jpg" alt="">
+                                                    src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/intermediary/f/68f46e97-6a91-4028-848f-1f2a6ff6716c/d53mgu0-5e5f7af6-ba42-403a-a9e7-7c4fec32fd43.jpg/v1/fill/w_783,h_1021,q_70,strp/amlito_amoroso_lopez_obrador_by_marionette2007_d53mgu0-pre.jpg" alt="">
                                             </b-col>
                                             <b-col md="11" class="my-auto">
                                                 <!-- De esta forma de alinean y juntan un boton y un input -->

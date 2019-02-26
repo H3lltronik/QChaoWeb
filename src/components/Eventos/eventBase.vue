@@ -13,9 +13,9 @@
                             id="carousel-fade"
                             fade controls class="noPadding"
                             indicators>
-                            <b-carousel-slide class="carousel-slide" img-src="https://homuapp.000webhostapp.com/Imagenes/4-1-2019-22-24-45.jpg" />
-                            <b-carousel-slide class="carousel-slide" img-src="https://homuapp.000webhostapp.com/Imagenes/24-11-2018-14-54-14.jpg" />
-                            <b-carousel-slide class="carousel-slide" img-src="https://homuapp.000webhostapp.com/Imagenes/15-1-2019-2-20-45.jpg" />
+                            <b-carousel-slide class="carousel-slide" img-src="https://i.ytimg.com/vi/MK9UguJjpiI/hqdefault.jpg" />
+                            <b-carousel-slide class="carousel-slide" img-src="http://1.bp.blogspot.com/-AMtDaj6UwRM/U3YyNdt1SyI/AAAAAAAAA0U/DCzOlCuRVgI/s1600/1395895_648253681908840_1065879546_n.jpg" />
+                            <b-carousel-slide class="carousel-slide" img-src="https://i.ytimg.com/vi/ybOuv3Vi-YU/maxresdefault.jpg" />
                         </b-carousel>
                     </b-col>
                     <b-col md="12" class="mt-3">
@@ -69,7 +69,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
     .card-body{
         padding-left: 0px !important;
         padding-right: 0px !important;
