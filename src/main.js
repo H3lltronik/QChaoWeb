@@ -20,6 +20,10 @@ import EventBase from './components/Eventos/eventBase.vue';
 import LeftAside from './components/leftAside.vue';
 import RightAside from './components/rightAside.vue';
 import NavBar from './components/Common/navBar.vue';
+import GeneralConfig from './components/Configuracion/configGeneral.vue';
+import AnunciosConfig from './components/Configuracion/configAnuncios.vue';
+import PersonalizacionConfig from './components/Configuracion/configPersonalizacion.vue';
+import SeguridadConfig from './components/Configuracion/configSeguridad.vue';
 
 import App from './App.vue';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -39,6 +43,10 @@ Vue.component('left-aside', LeftAside);
 Vue.component('right-aside', RightAside);
 Vue.component('navbar-component', NavBar);
 Vue.component('event-base', EventBase);
+Vue.component('general-config', GeneralConfig);
+Vue.component('anuncios-config', AnunciosConfig);
+Vue.component('personalizacion-config', PersonalizacionConfig);
+Vue.component('seguridad-config', SeguridadConfig);
 
 //Iconos
 Vue.component('menu-icon', Settings);

@@ -33,7 +33,7 @@
                     <account-icon/>
                 </b-nav-item>
                 <b-nav-item>
-                    <menu-icon />
+                    <menu-icon @click="goToRouter('configuracionPerfil')"/>
                 </b-nav-item>
             </b-navbar-nav>
         </b-navbar>

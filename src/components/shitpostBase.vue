@@ -27,7 +27,7 @@
                                     </b-col>
                                     <b-col md="12" class="noPadding">
                                         <b-card-text class="my-2" style="font-size: 11pt;">
-                                            Monitas chinaaaas ~ >w< <br>
+                                            Monitas chinaaaas ~ xd <br>
                                             Soy bien webo pero no lo admito
                                         </b-card-text>
                                         <b-row class="noPadding">
