@@ -7,7 +7,7 @@
                         QChaoWeb!
                     </b-navbar-brand>
                     <b-navbar-nav class="ml-auto">
-                        <b-nav-item >Home</b-nav-item>
+                        <b-nav-item @click="goToRoute ('')" >Home</b-nav-item>
                     </b-navbar-nav>
                 </b-navbar>
             </div>
@@ -92,6 +92,7 @@ export default {
             step1: true,
             step2: false,
             readyRegister: false,
+            register: false,
             next: false,
             instructions: ['Fill the blanks','Select account type'],
             stepCount: 1,
@@ -104,7 +105,7 @@ export default {
                 email: '',
                 nickname: '',
                 city: '',
-                accountType: 'Normal'
+                accountType: ''
             },
             loginAuth: false,
             loginAccount: {
@@ -143,10 +144,39 @@ export default {
         },
         registerUser () {
             console.log(this.newAccount)
+            let newAccount = this.newAccount
+            let type = 0;
+            let formData = new FormData()
+
+            if (newAccount.accountType == 'Normal')
+                type = 1
+            else if (newAccount.accountType == 'Normal')
+                type = 2
+            else if (newAccount.accountType == 'Normal')
+                type = 3
+
+            formData.set('username', newAccount.username)
+            formData.set('password', newAccount.password)
+            formData.set('email', newAccount.email)
+            formData.set('nickname', newAccount.nickname)
+            formData.set('ciudad', newAccount.city)
+            formData.set('tipoDeCuenta', type)
+            this.axios.post('http://localhost/QChao/conexiones/usuario/crearCuenta.php', formData).then(response => {
+                alert(response.data.response)
+                console.log(response.data)
+            })
         },
         loginMethod () {
             console.log(this.loginAccount)
+            this.$store.dispatch('loginUser', this.loginAccount)
+        },
+        goToRoute (route) {
+            if (route !== undefined || route != '') {
+                this.$router.push('/' + route)
+            }
         }
+    },
+    created () {
     },
     computed: {
     },
@@ -160,19 +190,26 @@ export default {
                 }else {
                     this.next = false;
                 }
+
+                if (this.newAccount.accountType != '') {
+                    this.register = true
+                } else {
+                    this.register = false
+                }
+                    
             },
             deep: true
         },
         loginAccount: {
             handler (val) {
-                if (this.loginAccount.username.length > 0 && this.loginAccount.password > 0) {
+                if (this.loginAccount.username.length > 0 && this.loginAccount.password.length > 0) {
                     this.loginAuth = true;
                 } else {
                     this.loginAuth = false;
                 }
             },
             deep: true
-        }
+        },
     }
 }
 </script>

@@ -30,7 +30,7 @@
                     <alertbox-icon/>
                 </b-nav-item>
                 <b-nav-item>
-                    <account-icon/>
+                    <account-icon @click="goToRouter('register')"/>
                 </b-nav-item>
                 <b-nav-item>
                     <menu-icon @click="goToRouter('configuracionPerfil')"/>
