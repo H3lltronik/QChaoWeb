@@ -24,16 +24,17 @@
                 <b-nav-item>Soporte</b-nav-item>
                 <!-- Iconos -->
                 <b-nav-item>
-                    <message-icon/>
+                    <message-icon v-if="hayUsuario"/>
                 </b-nav-item>
                 <b-nav-item>
-                    <alertbox-icon/>
+                    <alertbox-icon v-if="hayUsuario"/>
                 </b-nav-item>
                 <b-nav-item>
-                    <account-icon @click="goToRouter('register')"/>
+                    <account-icon @click="goToRouter('register')" v-if="!hayUsuario"/>
+                    <exitrun-icon @click="logout" v-if="hayUsuario"/>
                 </b-nav-item>
                 <b-nav-item>
-                    <menu-icon @click="goToRouter('configuracionPerfil')"/>
+                    <menu-icon @click="goToRouter('configuracionPerfil')" v-if="hayUsuario"/>
                 </b-nav-item>
             </b-navbar-nav>
         </b-navbar>
@@ -50,7 +51,19 @@ export default {
     methods: {
         goToRouter (route) {
             this.$router.push("/"+route)
+        },
+        logout () {
+            this.$store.dispatch('logout')
         }
+    },
+    computed: {
+        hayUsuario () {
+            let user = this.$store.getters.getUsuario
+            if (user.idUsuario)
+                return true
+            else
+                return false
+        },
     }
 }
 </script>

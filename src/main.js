@@ -14,6 +14,7 @@ import Crosshairs from 'vue-material-design-icons/Crosshairs.vue'
 import ClockOutline from 'vue-material-design-icons/ClockOutline.vue'
 import TicketConfirmation from 'vue-material-design-icons/TicketConfirmation.vue'
 import StarOutline from 'vue-material-design-icons/StarOutline.vue'
+import ExitRun from 'vue-material-design-icons/ExitRun.vue'
 
 // Custom components
 import ShitpostBase from './components/shitpostBase.vue';
@@ -26,6 +27,8 @@ import AnunciosConfig from './components/Configuracion/configAnuncios.vue';
 import PersonalizacionConfig from './components/Configuracion/configPersonalizacion.vue';
 import SeguridadConfig from './components/Configuracion/configSeguridad.vue';
 import Comentario from './components/Contenidos/comentario.vue';
+import Comentar from './components/Contenidos/comentar.vue';
+import CrearShitpost from './components/Contenidos/shitpost/nuevoShitpost.vue';
 
 import App from './App.vue';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -50,7 +53,9 @@ Vue.component('general-config', GeneralConfig);
 Vue.component('anuncios-config', AnunciosConfig);
 Vue.component('personalizacion-config', PersonalizacionConfig);
 Vue.component('seguridad-config', SeguridadConfig);
-Vue.component('comentario', Comentario);
+Vue.component('comentario-ver', Comentario);
+Vue.component('comentario-comentar', Comentar);
+Vue.component('nuevo-shitpost', CrearShitpost);
 
 //Iconos
 Vue.component('menu-icon', Settings);
@@ -63,9 +68,18 @@ Vue.component('crosshairs-icon', Crosshairs);
 Vue.component('clockoutline-icon', ClockOutline);
 Vue.component('ticketconfirmation-icon', TicketConfirmation);
 Vue.component('staroutline-icon', StarOutline);
+Vue.component('exitrun-icon', ExitRun);
 
 new Vue({
   router,
   store,
   render: h => h(App),
+  mounted () {
+    if (typeof(Storage) !== undefined){
+      if (localStorage.getItem("usuario")) {
+        let usuario = JSON.parse(localStorage.getItem("usuario"))
+        store.dispatch('autoLogin', usuario)
+      }
+    }
+  },
 }).$mount('#app');
