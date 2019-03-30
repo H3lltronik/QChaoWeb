@@ -1,7 +1,7 @@
 /* eslint-disable */
 export default({
     state: {
-        urlBase: 'http://192.168.0.85/QChao/',
+        urlBase: 'http://localhost/QChao/',
         loading: false
     },
     mutations: {

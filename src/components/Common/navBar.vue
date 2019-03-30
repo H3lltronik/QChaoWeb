@@ -14,14 +14,36 @@
                 </b-nav-form>
             </b-navbar-nav>
             <b-navbar-nav>
-                <b-nav-item-dropdown text="Inicio" right class="dropdown">
-                    <b-dropdown-item class="dropdown-menu" @click="goToRouter('forum')">
+                <b-nav-item-dropdown text="Inicio" right>
+                    <b-dropdown-item @click="goToRouter('forum')">
                         Foro
+                    </b-dropdown-item>
+                    <b-dropdown-item @click="goToRouter('')">
+                        Inicio
                     </b-dropdown-item>
                 </b-nav-item-dropdown>
                 <b-nav-item>Tendencias</b-nav-item>
-                <b-nav-item @click="goToRouter('events')">Eventos</b-nav-item>
-                <b-nav-item>Soporte</b-nav-item>
+
+                <b-nav-item v-if="tipoUsuario == 1" @click="goToRouter('events')">Eventos</b-nav-item>
+                <b-nav-item-dropdown text="Eventos" right >
+                    <b-dropdown-item @click="goToRouter('crearEventos')" v-if="tipoUsuario != 1">
+                        Crear evento
+                    </b-dropdown-item>
+                    <b-dropdown-item @click="goToRouter('events')">
+                        Descubrir
+                    </b-dropdown-item>
+                </b-nav-item-dropdown>
+
+                <b-nav-item v-if="tipoUsuario == 1" @click="goToRouter('soporte')">Soporte</b-nav-item>
+                <b-nav-item-dropdown text="Soporte" right>
+                    <b-dropdown-item  @click="goToRouter('soporte')" v-if="tipoUsuario != 1">
+                        Crear soporte
+                    </b-dropdown-item>
+                    <b-dropdown-item  @click="goToRouter('soporte')">
+                        Descubrir
+                    </b-dropdown-item>
+                </b-nav-item-dropdown>
+                <b-nav-item v-if="tipoUsuario != 1" @click="goToRouter('administracion')">Administracion</b-nav-item>
                 <!-- Iconos -->
                 <b-nav-item>
                     <message-icon v-if="hayUsuario"/>
@@ -64,12 +86,16 @@ export default {
             else
                 return false
         },
+        usuario () {
+          return this.$store.getters.getUsuario
+        },
+        tipoUsuario () {
+            let user = this.$store.getters.getUsuario
+            return user.idTipoDeCuenta
+        }
     }
 }
 </script>
 
 <style>
-    .dropdown:hover > .dropdown-menu {
-        display: block;
-    }
 </style>

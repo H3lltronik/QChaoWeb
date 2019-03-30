@@ -12,7 +12,7 @@
                 </b-navbar>
             </div>
             <div class="centrado">
-                <b-card border-variant="dark" bg-variant="dark" header="Register" 
+                <b-card border-variant="dark" bg-variant="dark" header="Register"
                 :title="instructions[stepCount]" v-if="!login"
                 text-variant="white" class="text-center" header-border-variant="secondary">
                 <!-- Step 1 -->
@@ -56,7 +56,7 @@
                         <b-card-text>
                             {{accountDetails[accountCounter]}}
                         </b-card-text>
-                        
+
                     </div>
                     <b-button variant="primary" class="my-2 mr-1" style="width: 40%;" @click="previousStep">Return</b-button>
                     <b-button variant="success" :disabled="!register" class="my-2" style="width: 40%;" @click="registerUser">Register</b-button>
@@ -150,9 +150,9 @@ export default {
 
             if (newAccount.accountType == 'Normal')
                 type = 1
-            else if (newAccount.accountType == 'Normal')
+            else if (newAccount.accountType == 'Business')
                 type = 2
-            else if (newAccount.accountType == 'Normal')
+            else if (newAccount.accountType == 'Administrator')
                 type = 3
 
             formData.set('username', newAccount.username)
@@ -196,7 +196,7 @@ export default {
                 } else {
                     this.register = false
                 }
-                    
+
             },
             deep: true
         },

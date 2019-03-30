@@ -6,6 +6,7 @@ import axios from 'axios'
 import User from './user'
 import Shitpost from './shitpost'
 import Shared from './shared'
+import Eventos from './eventos'
 
 Vue.use(Vuex)
 
@@ -14,5 +15,6 @@ export const store = new Vuex.Store({
         user: User,
         shitpost: Shitpost,
         shared: Shared,
+        eventos: Eventos,
     }
 })

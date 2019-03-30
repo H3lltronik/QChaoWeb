@@ -10,7 +10,6 @@
                         </b-col>
                         <b-col md="6" >
                             <shitpost-base></shitpost-base>
-                            
                         </b-col>
                         <b-col md="3">
                             <right-aside></right-aside>
@@ -18,7 +17,7 @@
                     </b-row>
                 </b-col>
             </b-row>
-        </b-container> 
+        </b-container>
     </div>
 </template>
 
@@ -36,5 +35,5 @@ export default {
 </script>
 
 <style>
-    
+
 </style>

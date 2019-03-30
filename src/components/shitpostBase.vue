@@ -6,7 +6,7 @@
         <b-card class="mt-2" align="left" v-for="(publicacion, index) in publicaciones" :key="index">
             <b-container class="noPadding" >
                 <b-row>
-                    <!-- Las columnas en bootstrap dividen todo el layout en 12 columnas y segun la etiqueta de tamaño se le asigna el valor/cantidad de columnas 
+                    <!-- Las columnas en bootstrap dividen todo el layout en 12 columnas y segun la etiqueta de tamaño se le asigna el valor/cantidad de columnas
                         que tomara lo que este dentro -->
                     <b-col md="12" class="noPadding" >
                         <b-card-group>
@@ -18,8 +18,10 @@
                                                 left height="50"></b-card-img>
                                             <b-col>
                                                 <b-row>
-                                                    <b-card-text style="font-size: 16pt;" >
-                                                        {{publicacion.nombre}}
+                                                    <b-card-text style="font-size: 16pt; cursor: pointer;">
+                                                        <a href="#" @click.prevent="goToRouter('perfil/' + publicacion.idUsuario)">
+                                                          {{publicacion.nombre}}
+                                                        </a>
                                                     </b-card-text>
                                                 </b-row>
                                                 <b-row>
@@ -69,7 +71,7 @@
 
 
                                         <comentario-ver v-for="(comentario, index) in publicacion.comentarios" :key="index"
-                                        :comentario="comentario.comentario" :nickname="comentario.nombre" 
+                                        :comentario="comentario.comentario" :nickname="comentario.nombre"
                                         :idUsuario="comentario.idUsuario"/>
 
 
@@ -106,15 +108,18 @@ export default {
                 idShitpost: idShitpost,
             }
             this.$store.dispatch('indicarLike', publicacion)
-        }
+        },
+        goToRouter (route) {
+          this.$router.push("/"+route)
+        },
     },
     computed: {
         publicaciones () {
             let auxPublicaciones = this.$store.getters.getShitpost
             if (auxPublicaciones.length > 0) {
-                
+
                 return auxPublicaciones
-                
+
             } else {
                 return []
             }
