@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-card class="mt-5 noPadding">
+        <b-card class="mt-5 noPadding" v-for="(evento, index) in eventos" :key="index">
             <b-container class="noPadding">
                 <b-row class="noPadding">
                     <b-col md="12" class="noPadding">
@@ -13,47 +13,62 @@
                             id="carousel-fade"
                             fade controls class="noPadding"
                             indicators>
-                            <b-carousel-slide class="carousel-slide" img-src="https://i.ytimg.com/vi/MK9UguJjpiI/hqdefault.jpg" />
-                            <b-carousel-slide class="carousel-slide" img-src="http://1.bp.blogspot.com/-AMtDaj6UwRM/U3YyNdt1SyI/AAAAAAAAA0U/DCzOlCuRVgI/s1600/1395895_648253681908840_1065879546_n.jpg" />
-                            <b-carousel-slide class="carousel-slide" img-src="https://i.ytimg.com/vi/ybOuv3Vi-YU/maxresdefault.jpg" />
+                            <b-carousel-slide class="carousel-slide" v-for="imagen in Number(evento.cantImagenes)" :key="imagen"
+                            :img-src="getImageUrl(evento, imagen)" style="width: 100% !important; height: 300px !important;"/>
                         </b-carousel>
                     </b-col>
                     <b-col md="12" class="mt-3">
                         <b-card-text class="text-left">
                             <b-row >
-                                <h4 class="h4 my-auto">BOCHOEVENTO 2019</h4>
-                                <b-button class="ml-auto" size="sm">ASISTIRE</b-button>
+                                <h4 class="h4 my-auto">{{evento.titulo}}</h4>
+                                <b-button class="ml-auto" size="sm" :disabled="eventoPasado(evento)"
+                                variant="primary" @click="registrarAsistencia(evento)">
+                                    ASISTIRE
+                                </b-button>
                             </b-row>
                             <b-row class="my-2">
-                                <h6 class="text-muted my-auto"><crosshairs-icon/> Guadalajara</h6>
+                                <h6 class="text-muted my-auto"><crosshairs-icon/> {{evento.ubicacion}}</h6>
                             </b-row>
                             <b-row class="my-2">
-                                <h6 class="text-muted my-auto"><clockoutline-icon/> (30/02/19)</h6>
+                                <h6 class="text-muted my-auto"><clockoutline-icon/> {{evento.fecha}}</h6>
                             </b-row>
                             <b-row class="my-2">
-                                <h6 class="text-muted my-auto"><account-icon/> xXHELLTRONIKXx</h6>
+                                <account-icon/>
+                                <a href="#" class="text-muted my-auto ml-1"
+                                @click.prevent="goToRouter('perfil/' + evento.idUsuario)">
+                                    {{evento.Nombre}}
+                                </a>
                             </b-row>
-                            <b-row class="my-2">
-                                <h6 class="text-muted my-auto"><staroutline-icon/> 4 de calificacion</h6>
+                            <b-row class="my-2" v-if="eventoPasado(evento)">
+                                <h6 class="text-muted my-auto">
+                                    <staroutline-icon/>{{calificacion(evento)}} de calificacion 
+                                </h6>
+                                <div class="text-muted my-auto mx-1" style="font-size: 8pt;"> 
+                                    ( de {{evento.calificaciones.length}} calificacion[es] )
+                                </div>
                             </b-row>
                             <hr class="my-3">
                             <b-row class="text-center">
                                 <b-col md="4">
-                                    <h6 class="text-muted my-auto">200 ASISTENTES</h6>
+                                    <h6 class="text-muted my-auto">{{evento.asistentes}} ASISTENTES</h6>
                                 </b-col>
-                                <b-col md="4">
-                                    <h6 class="text-muted my-auto">Volkswagen Compactos</h6>
+                                <b-col md="8">
+                                    <h6 class="text-muted my-auto">tags: </h6>
                                 </b-col>
-                                <b-col md="4">
-                                    <h6 class="text-muted my-auto">Volkswagen Compactos</h6>
+                                <b-col md="12" class="mt-2">
+                                    <b-form-textarea size="sm" no-resize rows="4"
+                                    :disabled="true" type="text" :value="evento.descripcion"/>
                                 </b-col>
                             </b-row>
                             <hr class="my-3">
-                            <b-row>
-                                <h6 class="text-muted my-auto">Califica: </h6>
+                            <b-row v-if="eventoPasado(evento)">
+                                <h6 class="text-muted my-auto">¿Que te parecio el evento?</h6>
                                 <b-input-group prepend="0" append="5" class="my-2">
-                                    <b-form-input type="range" min="0" max="5"/>
+                                    <b-form-input type="range" min="0" max="5" v-model="calificar"/>
                                 </b-input-group>
+                                <b-button class="ml-auto" size="sm" block @click="calificarEvento(evento)">
+                                    Calificar
+                                </b-button>
                             </b-row>
                         </b-card-text>
                     </b-col>
@@ -65,7 +80,66 @@
 
 <script>
 export default {
-    
+    props: {
+        eventos: {
+            type: Array
+        }
+    },
+    data () {
+        return {
+            calificar: '',
+        }
+    },
+    computed: {
+        usuario () {
+            let user = this.$store.getters.getUsuario
+            return user
+        }
+    },
+    methods: {
+        eventoPasado (evento) {
+            var date1 = new Date(evento.fecha);
+            var date2 = new Date();
+            var timeDiff = date1.getTime() - date2.getTime();
+            
+            if (timeDiff < 0)
+                return true
+            else
+                return false
+        },
+        getImageUrl (evento, imgIndex) {
+            return 'http://localhost/QChao/media/eventos/' + evento.idEvento + '/' + (imgIndex-1) + '.jpg';
+        },
+        calificacion (evento) {
+            let total = 0;
+            if (evento.calificaciones.length > 0) {
+                evento.calificaciones.forEach(cal => {
+                    total += Number(cal.calificacion)
+                });
+                return (total / evento.calificaciones.length)
+            } else {
+                return 0;
+            }
+        },
+        calificarEvento (evento) {
+            let newEvento = {
+                idEvento: evento.idEvento,
+                idUsuario: this.usuario.idUsuario,
+                calificacion: this.calificar,
+            }
+            this.$store.dispatch('calificarEvento', newEvento)
+        },
+        registrarAsistencia (evento) {
+            let asistencia = {
+                idEvento: evento.idEvento,
+                idUsuario: this.usuario.idUsuario,
+            }
+            this.$store.dispatch('registrarAsistencia', asistencia)
+        },
+        goToRouter (route) {
+          this.$router.push("/"+route)
+        },
+    }
 }
 </script>
 

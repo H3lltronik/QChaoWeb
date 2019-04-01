@@ -1,6 +1,6 @@
 <template>
+<!-- eslint-disable -->
     <div>
-
         <nuevo-shitpost v-if="hayUsuario"/>
 
         <b-card class="mt-2" align="left" v-for="(publicacion, index) in publicaciones" :key="index">
@@ -87,6 +87,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
     data () {
         return {

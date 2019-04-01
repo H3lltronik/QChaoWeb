@@ -9,7 +9,7 @@
                             <left-aside></left-aside>
                         </b-col>
                         <b-col md="6" >
-                            <event-base :eventos="eventos"></event-base>
+                            <taller-base :talleres="talleres"></taller-base>
                         </b-col>
                         <b-col md="3">
                             <right-aside></right-aside>
@@ -32,13 +32,13 @@ export default {
         
     },
     created () {
-        this.$store.dispatch('cargarEventos')
+        this.$store.dispatch('cargarTalleres')
     },
     computed: {
-        eventos () {
-            let eventos = this.$store.getters.getEventos
-            if (eventos.length > 0) {
-                return eventos
+        talleres () {
+            let talleres = this.$store.getters.getTalleres
+            if (talleres.length > 0) {
+                return talleres
             } else {
                 return []
             }

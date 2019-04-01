@@ -15,6 +15,8 @@ import ClockOutline from 'vue-material-design-icons/ClockOutline.vue'
 import TicketConfirmation from 'vue-material-design-icons/TicketConfirmation.vue'
 import StarOutline from 'vue-material-design-icons/StarOutline.vue'
 import ExitRun from 'vue-material-design-icons/ExitRun.vue'
+import ContactMail from 'vue-material-design-icons/ContactMail.vue'
+import Information from 'vue-material-design-icons/Information.vue'
 
 // Custom components
 import ShitpostBase from './components/shitpostBase.vue';
@@ -29,6 +31,8 @@ import SeguridadConfig from './components/Configuracion/configSeguridad.vue';
 import Comentario from './components/Contenidos/comentario.vue';
 import Comentar from './components/Contenidos/comentar.vue';
 import CrearShitpost from './components/Contenidos/shitpost/nuevoShitpost.vue';
+
+import TallerBase from './components/Contenidos/talleres/tallerBase.vue';
 
 import App from './App.vue';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -56,6 +60,7 @@ Vue.component('seguridad-config', SeguridadConfig);
 Vue.component('comentario-ver', Comentario);
 Vue.component('comentario-comentar', Comentar);
 Vue.component('nuevo-shitpost', CrearShitpost);
+Vue.component('taller-base', TallerBase);
 
 //Iconos
 Vue.component('menu-icon', Settings);
@@ -69,6 +74,8 @@ Vue.component('clockoutline-icon', ClockOutline);
 Vue.component('ticketconfirmation-icon', TicketConfirmation);
 Vue.component('staroutline-icon', StarOutline);
 Vue.component('exitrun-icon', ExitRun);
+Vue.component('contactmail-icon', ContactMail);
+Vue.component('information-icon', Information);
 
 new Vue({
   router,

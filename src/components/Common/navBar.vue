@@ -36,7 +36,7 @@
 
                 <b-nav-item v-if="tipoUsuario == 1" @click="goToRouter('soporte')">Soporte</b-nav-item>
                 <b-nav-item-dropdown text="Soporte" right>
-                    <b-dropdown-item  @click="goToRouter('soporte')" v-if="tipoUsuario != 1">
+                    <b-dropdown-item  @click="goToRouter('crearTaller')" v-if="tipoUsuario != 1">
                         Crear soporte
                     </b-dropdown-item>
                     <b-dropdown-item  @click="goToRouter('soporte')">
@@ -46,7 +46,7 @@
                 <b-nav-item v-if="tipoUsuario != 1" @click="goToRouter('administracion')">Administracion</b-nav-item>
                 <!-- Iconos -->
                 <b-nav-item>
-                    <message-icon v-if="hayUsuario"/>
+                    <message-icon v-if="hayUsuario" @click="goToRouter('mensajes')"/>
                 </b-nav-item>
                 <b-nav-item>
                     <alertbox-icon v-if="hayUsuario"/>

@@ -10,6 +10,8 @@
                         </b-col>
                         <b-col md="6" >
                             <shitpost-base></shitpost-base>
+                            <event-base :eventos="eventos"></event-base>
+                            <taller-base :talleres="talleres"></taller-base>
                         </b-col>
                         <b-col md="3">
                             <right-aside></right-aside>
@@ -28,8 +30,27 @@ export default {
 
         }
     },
-    methods: {
-
+    created () {
+        this.$store.dispatch('cargarEventos')
+        this.$store.dispatch('cargarTalleres')
+    },
+    computed: {
+        eventos () {
+            let eventos = this.$store.getters.getEventos
+            if (eventos.length > 0) {
+                return eventos
+            } else {
+                return []
+            }
+        },
+        talleres () {
+            let talleres = this.$store.getters.getTalleres
+            if (talleres.length > 0) {
+                return talleres
+            } else {
+                return []
+            }
+        }
     }
 }
 </script>

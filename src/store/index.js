@@ -7,6 +7,7 @@ import User from './user'
 import Shitpost from './shitpost'
 import Shared from './shared'
 import Eventos from './eventos'
+import Talleres from './talleres'
 
 Vue.use(Vuex)
 
@@ -16,5 +17,6 @@ export const store = new Vuex.Store({
         shitpost: Shitpost,
         shared: Shared,
         eventos: Eventos,
+        talleres: Talleres,
     }
 })

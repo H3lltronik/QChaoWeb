@@ -9,7 +9,11 @@
                             <left-aside></left-aside>
                         </b-col>
                         <b-col md="6" >
-                            <event-base :eventos="eventos"></event-base>
+                            <b-card class="mt-5" align="left">
+                                <b-row>
+                                    
+                                </b-row>
+                            </b-card>
                         </b-col>
                         <b-col md="3">
                             <right-aside></right-aside>
@@ -17,7 +21,7 @@
                     </b-row>
                 </b-col>
             </b-row>
-        </b-container> 
+        </b-container>
     </div>
 </template>
 
@@ -25,28 +29,16 @@
 export default {
     data () {
         return {
-
         }
     },
     methods: {
         
     },
-    created () {
-        this.$store.dispatch('cargarEventos')
-    },
     computed: {
-        eventos () {
-            let eventos = this.$store.getters.getEventos
-            if (eventos.length > 0) {
-                return eventos
-            } else {
-                return []
-            }
+        usuario () {
+            let user = this.$store.getters.getUsuario
+            return user
         }
     }
 }
 </script>
-
-<style>
-    
-</style>

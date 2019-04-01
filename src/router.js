@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Vue from 'vue';
 import Router from 'vue-router';
 
@@ -8,6 +9,9 @@ import MainEvents from './components/Eventos/eventsMain.vue';
 import MenuConfig from './components/Configuracion/configBase.vue';
 import VerPerfil from './components/Perfil/verPerfil.vue';
 import CrearEventos from './components/Contenidos/eventos/crearEvento.vue';
+import CrearTaller from './components/Contenidos/talleres/crearTaller.vue';
+import MainTalleres from './components/Contenidos/talleres/talleresMain.vue';
+import MainMensajes from './components/Contenidos/mensajes/mensajesMain.vue';
 
 Vue.use(Router);
 
@@ -49,6 +53,21 @@ export default new Router({
       path: '/crearEventos',
       name: 'Crear eventos',
       component: CrearEventos,
+    },
+    {
+      path: '/crearTaller',
+      name: 'Crear Talleres',
+      component: CrearTaller,
+    },
+    {
+      path: '/soporte',
+      name: 'Soporte',
+      component: MainTalleres,
+    },
+    {
+      path: '/mensajes',
+      name: 'Mensajes',
+      component: MainMensajes,
     },
   ],
 });
