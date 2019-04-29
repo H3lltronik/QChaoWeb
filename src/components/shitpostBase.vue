@@ -1,7 +1,6 @@
 <template>
 <!-- eslint-disable -->
     <div>
-        <nuevo-shitpost v-if="hayUsuario"/>
 
         <b-card class="mt-2" align="left" v-for="(publicacion, index) in publicaciones" :key="index">
             <b-container class="noPadding" >
@@ -14,7 +13,7 @@
                                 <b-row class="noPadding">
                                     <b-col md="12" class="noPadding">
                                         <b-row>
-                                            <b-card-img :src="publicacion.perfilImagen"
+                                            <b-card-img class="ml-2" :src="publicacion.perfilImagen"
                                                 left height="50"></b-card-img>
                                             <b-col>
                                                 <b-row>
@@ -34,6 +33,21 @@
                                         <b-card-text class="my-2" style="font-size: 11pt;">
                                             {{publicacion.descripcion}}
                                         </b-card-text>
+                                        <b-row class="d-flex">
+                                            <div class="my-auto">
+                                                <b-row>
+                                                    Tags: 
+                                                    <div v-if="publicacion.tags.length > 0">
+                                                        <b-badge class="mr-1" v-for="(tag, index) in publicacion.tags" :key="index">
+                                                            {{tag.name}}
+                                                        </b-badge>
+                                                    </div>
+                                                    <div v-else>
+                                                        Sin tags
+                                                    </div>
+                                                </b-row>
+                                            </div>
+                                        </b-row>
                                         <b-row class="noPadding">
                                             <b-col md="12" style="overflow: hidden; height: 500px;" class="noPadding text-center">
                                                 <img v-if="publicacion.tipo == 'image'"
@@ -53,6 +67,11 @@
                                             <div class="mr-5 my-auto">
                                                 <comment-icon/>
                                                 <small class="ml-2">{{publicacion.comentarios.length}}</small>
+                                            </div>
+                                            <div class="mr-5 my-auto">
+                                                <b-button size="sm" variant="danger" class="mb-2" @click="reportar(publicacion)" v-if="hayUsuario">
+                                                    Reportar
+                                                </b-button>
                                             </div>
                                         </b-row>
                                         <hr>
@@ -89,17 +108,22 @@
 <script>
 /* eslint-disable */
 export default {
+    props: {
+        publicaciones: {
+            type: Array
+        }
+    },
     data () {
         return {
 
         }
     },
     created () {
-        this.$store.dispatch('loadShitpost')
+        // this.$store.dispatch('loadShitpost')
         if (typeof(Storage) !== undefined){
-            let usuario = localStorage.getItem("usuario")
-            if (usuario)
-                console.log(usuario.idUsuario)
+            let token = localStorage.getItem("token")
+            if (token)
+                console.log("token", token)
             }
     },
     methods: {
@@ -113,21 +137,39 @@ export default {
         goToRouter (route) {
           this.$router.push("/"+route)
         },
+        reportar (publicacion) {
+            let mensaje = ''
+            do{
+                mensaje = prompt('Cuentanos porque reportaste eso')
+            }while(mensaje == null || mensaje == 0 );
+
+            let descicion = confirm('Desea mandar su reporte?')
+            let payload = {
+                mensaje: mensaje,
+                contenido: publicacion,
+                tipo: 'shitpost',
+                idUsuario: publicacion.idUsuario,
+            }
+            if (descicion) {
+                this.$store.dispatch('generarReporte', payload)
+            }
+            // console.log("publicacion", publicacion)
+        }
     },
     computed: {
-        publicaciones () {
-            let auxPublicaciones = this.$store.getters.getShitpost
-            if (auxPublicaciones.length > 0) {
+        // publicaciones () {
+        //     let auxPublicaciones = this.$store.getters.getShitpost
+        //     if (auxPublicaciones.length > 0) {
 
-                return auxPublicaciones
+        //         return auxPublicaciones
 
-            } else {
-                return []
-            }
-        },
+        //     } else {
+        //         return []
+        //     }
+        // },
         hayUsuario () {
             let user = this.$store.getters.getUsuario
-            if (user.idUsuario)
+            if (user)
                 return true
             else
                 return false

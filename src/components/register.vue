@@ -143,7 +143,6 @@ export default {
             this.newAccount.city = city
         },
         registerUser () {
-            console.log(this.newAccount)
             let newAccount = this.newAccount
             let type = 0;
             let formData = new FormData()
@@ -163,11 +162,9 @@ export default {
             formData.set('tipoDeCuenta', type)
             this.axios.post('http://localhost/QChao/conexiones/usuario/crearCuenta.php', formData).then(response => {
                 alert(response.data.response)
-                console.log(response.data)
             })
         },
         loginMethod () {
-            console.log(this.loginAccount)
             this.$store.dispatch('loginUser', this.loginAccount)
         },
         goToRoute (route) {

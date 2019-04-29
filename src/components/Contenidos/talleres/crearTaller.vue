@@ -29,21 +29,38 @@
                                <b-col md="6" class="mt-2">
                                   <b-form-input size="sm" type="text" placeholder="Ciudad" v-model="ciudad"/>
                                </b-col>
-                                <b-col md="6" class="mt-2">
-                                  <b-form-input size="sm" type="text" placeholder="Tags separados por coma" v-model="tags"/>
-                                </b-col>
-                                <b-col md="6" class="mt-2">
-                                  <b-form-input size="sm" type="text" placeholder="Contacto" v-model="contacto"/>
+                               <b-col md="6" class="mt-2">
+                                  <b-form-input size="sm" type="number" placeholder="Contacto" v-model="contacto"/>
                                </b-col>
-                                <b-col md="6" class="mt-2">
-                                    <b-dropdown text="Tipo de establecimiento" class="mx-5" v-model="tipo" block size="sm">
-                                        <b-dropdown-item value="Refaccionaria" @click="selectTipo('Refaccionaria')">
-                                            Refaccionaria
-                                        </b-dropdown-item>
-                                        <b-dropdown-item value="Taller"  @click="selectTipo('Taller')">
-                                            Taller
-                                        </b-dropdown-item>
-                                    </b-dropdown>
+                                <b-col md="12" class="mt-2">
+                                  <vue-tags class="mx-auto my-auto mt-3"
+                                    style="z-index: 10;"
+                                    :active="activeTags"
+                                    :all="allTags"
+                                    :element-count-for-start-arrow-scrolling="3"
+                                    :tab-index="1"
+                                    :tag-creation-enabled="true"
+                                    :colors-enabled="false"
+                                    :tag-color-default="'green'"
+                                    :tag-list-label="'Seleccione sus tags'"
+                                    :placeholder="'Seleccione sus tags'"
+                                    @on-tag-added="onTagAdded"
+                                    @on-tag-removed="onTagRemoved"
+                                    @on-tag-list-opened="onTagListOpened"
+                                    @on-tag-list-closed="onTagListClosed"
+                                    @on-tag-created="onTagCreated"/>
+                                </b-col>
+                                <b-col md="12" class="mt-2 d-flex">
+                                    <b-row class="mx-auto">
+                                      <b-dropdown text="Tipo de establecimiento" class="mx-5" v-model="tipo" block size="sm">
+                                          <b-dropdown-item value="Refaccionaria" @click="selectTipo('Refaccionaria')">
+                                              Refaccionaria
+                                          </b-dropdown-item>
+                                          <b-dropdown-item value="Taller"  @click="selectTipo('Taller')">
+                                              Taller
+                                          </b-dropdown-item>
+                                      </b-dropdown>
+                                    </b-row>
                                 </b-col>
                                 <b-col class="mt-2">
                                   <b-button size="sm" variant="primary" block @click="onPickFile">Elegir imagenes</b-button>
@@ -86,7 +103,15 @@ export default {
             tags: '',
             contacto: '',
             tipo: '',
+            allTags: [],
+            activeTags: [],
         }
+    },
+    created () {
+        this.$store.dispatch('loadTags').then(res => {
+            console.log(res)
+            this.allTags = res
+        })
     },
     methods: {
         onPickFile () {
@@ -105,7 +130,7 @@ export default {
             contacto: this.contacto,
             horario: this.horarios,
             ciudad: this.ciudad,
-            tags: this.tags,
+            tags: this.generateTags(),
             tipo: this.tipo,
         }
         this.$store.dispatch('crearSoporte', taller)
@@ -113,6 +138,37 @@ export default {
         selectTipo (tipo) {
             this.tipo = tipo
         },
+        generateTags () {
+            let aux = []
+            this.activeTags.forEach(element => {
+                aux.push(JSON.stringify(element))
+            });
+            return aux
+        },
+        onTagAdded ($event) {
+            this.activeTags.push($event)
+        },
+        onTagRemoved ($event) {
+            console.log('removed', $event)
+            let index = this.activeTags.map(function(e) { return e.id; }).indexOf($event.id);
+            this.activeTags.splice(index, 1)
+        },
+        onTagListOpened ($event) {
+
+        },
+        onTagListClosed ($event) {
+
+        },
+        onTagCreated ($event) {
+            console.log($event)
+        
+            let aux = {...$event}
+            aux.id = this.numeroRandom(1, 500)
+            this.allTags.push(aux)
+        },
+        numeroRandom (min, max) {
+            return Math.floor(Math.random() * (+max - +min)) + +min; 
+        }
     },
     computed: {
         usuario () {

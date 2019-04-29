@@ -2,7 +2,7 @@
     <div>
         <b-card class="mt-5 noPadding" v-for="(taller, index) in talleres" :key="index">
             <b-container class="noPadding">
-                <b-row class="noPadding">
+                <b-row class="noPadding w-100">
                     <b-col md="12" class="noPadding">
                         <b-row class="noPadding">
                             
@@ -20,14 +20,25 @@
                     <b-col md="12" class="mt-3">
                         <b-card-text class="text-left">
                             <b-row >
+                                <!-- {{taller}} -->
                                 <h4 class="h4 my-auto">{{taller.Nombre}}</h4>
+                                <b-button variant="danger" size="sm" @click="reportar(taller)" class="ml-2" v-if="hayUsuario">
+                                    Reportar
+                                </b-button>
                                 <div class="ml-auto">
-                                    <b-row v-if="1">
+                                    <b-row v-if="taller.Verificado != 1">
+                                        <div v-if="taller.idUsuario == usuario.idUsuario" class="mr-2">
+                                            <b-row class="">
+                                                <b-button variant="primary" size="sm" @click="goToRouter('verificarTaller/' + taller.idEstablecimiento)">
+                                                    Solicitar verificacion
+                                                </b-button>
+                                            </b-row>
+                                        </div>
                                         <div class="my-auto">Sin verificar</div>
                                     </b-row>
-                                    <b-row v-if="0">
+                                    <b-row v-else>
                                         <div class="my-auto">Verificado: </div>
-                                        <staroutline-icon class="mr-2 my-auto"/>
+                                        <staroutline-icon class="mr-2 my-auto" style="margin-bottom: 8px !important;"/>
                                     </b-row>
                                 </div>
                             </b-row>
@@ -49,6 +60,21 @@
                             </b-row>
                             <b-row class="my-2">
                                 <h6 class="text-muted my-auto"><information-icon/> {{taller.tipoEstablecimiento}}</h6>
+                            </b-row>
+                            <b-row class="d-flex">
+                                <div class="my-auto">
+                                    <b-row>
+                                        Tags: 
+                                        <div v-if="taller.tags.length > 0">
+                                            <b-badge class="mr-1" v-for="(tag, index) in taller.tags" :key="index">
+                                                {{tag.name}}
+                                            </b-badge>
+                                        </div>
+                                        <div v-else>
+                                            Sin tags
+                                        </div>
+                                    </b-row>
+                                </div>
                             </b-row>
                             <hr class="my-3">
                             <b-row class="text-center">
@@ -76,11 +102,26 @@ export default {
         return {
         }
     },
+    created () {
+    },
     computed: {
         usuario () {
             let user = this.$store.getters.getUsuario
-            return user
-        }
+            if (user)
+                return user
+            else {
+                return {
+                    idUsuario: 'NADA'
+                }
+            }
+        },
+        hayUsuario () {
+            let user = this.$store.getters.getUsuario
+            if (user)
+                return true
+            else
+                return false
+        },
     },
     methods: {
         getImageUrl (taller, imgIndex) {
@@ -89,6 +130,24 @@ export default {
         goToRouter (route) {
           this.$router.push("/"+route)
         },
+        reportar (publicacion) {
+            let mensaje = ''
+            do{
+                mensaje = prompt('Cuentanos porque reportaste eso')
+            }while(mensaje == null || mensaje == 0 );
+
+            let descicion = confirm('Desea mandar su reporte?')
+            let payload = {
+                mensaje: mensaje,
+                contenido: publicacion,
+                tipo: 'establecimiento',
+                idUsuario: publicacion.idUsuario,
+            }
+            if (descicion) {
+                this.$store.dispatch('generarReporte', payload)
+            }
+            // console.log("publicacion", publicacion)
+        }
     }
 }
 </script>

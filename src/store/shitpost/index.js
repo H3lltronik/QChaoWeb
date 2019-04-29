@@ -109,6 +109,7 @@ export default({
                     idShitpost: data.idShitpost,
                     idUsuario: publicacion.idUsuario,
                     imagen: 'http://localhost/QChao/media/shitpost/' + data.fichero,
+                    tags: publicacion.tags,
                     likes: 0,
                     nombre: publicacion.nombreUsuario,
                     perfilImagen: 'http://192.168.0.85/QChao/media/usuarios/' + publicacion.idUsuario + '.jpg',
@@ -116,7 +117,7 @@ export default({
                 }
                 commit('addPublicacion', newPublicacion)
                 console.log("Subido xd", response.data)
-                console.log("Nueva publicacion", newPublicacion)
+                console.log("Nueva publicacion", newPublicacion, 'PARAMETRO', publicacion)
             }).catch(function(){
                 console.log('FAILURE!!');
             });

@@ -34,6 +34,8 @@ export default {
         return {
             configTab: 0,
         }
+    },
+    created () {
     }
 }
 </script>

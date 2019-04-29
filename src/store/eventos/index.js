@@ -57,6 +57,7 @@ export default({
       axios.post('http://localhost/QChao/conexiones/contenido/eventos/getAllEventos.php').then(response => {
         let eventos = response.data.eventos
         if (response.data.status.includes('OK')) {
+          console.log("Eventos", eventos)
           commit('setEventos', eventos)
         }
       }).catch(error => {
@@ -103,7 +104,7 @@ export default({
   },
   getters: {
     getEventos (state) {
-      return state.eventos
+      return state.eventos.reverse()
     }
   }
 })

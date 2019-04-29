@@ -9,24 +9,23 @@
                 el componente que tiene agrupado es un nav-form para la barra de busqueda-->
             <b-navbar-nav class="ml-auto">
                 <b-nav-form>
-                    <b-form-input size="sm" type="text" placeholder="Search" />
-                    <b-button size="sm" type="submit">Buscar</b-button>
+                    <b-form-input size="sm" type="text" autocomplete="false" width="300" placeholder="Tags separados por espacio" v-model="tagsBuscar"/>
+                    <b-button size="sm" @click="buscar">Buscar</b-button>
                 </b-nav-form>
             </b-navbar-nav>
             <b-navbar-nav>
                 <b-nav-item-dropdown text="Inicio" right>
                     <b-dropdown-item @click="goToRouter('forum')">
-                        Foro
+                        Foro    
                     </b-dropdown-item>
                     <b-dropdown-item @click="goToRouter('')">
                         Inicio
                     </b-dropdown-item>
                 </b-nav-item-dropdown>
-                <b-nav-item>Tendencias</b-nav-item>
+                <!-- <b-nav-item>Tendencias</b-nav-item> -->
 
-                <b-nav-item v-if="tipoUsuario == 1" @click="goToRouter('events')">Eventos</b-nav-item>
                 <b-nav-item-dropdown text="Eventos" right >
-                    <b-dropdown-item @click="goToRouter('crearEventos')" v-if="tipoUsuario != 1">
+                    <b-dropdown-item @click="goToRouter('crearEventos')" v-if="tipoUsuario != 'Normal' && hayUsuario">
                         Crear evento
                     </b-dropdown-item>
                     <b-dropdown-item @click="goToRouter('events')">
@@ -34,22 +33,37 @@
                     </b-dropdown-item>
                 </b-nav-item-dropdown>
 
-                <b-nav-item v-if="tipoUsuario == 1" @click="goToRouter('soporte')">Soporte</b-nav-item>
                 <b-nav-item-dropdown text="Soporte" right>
-                    <b-dropdown-item  @click="goToRouter('crearTaller')" v-if="tipoUsuario != 1">
+                    <b-dropdown-item  @click="goToRouter('crearTaller')" v-if="tipoUsuario != 'Normal' && hayUsuario">
                         Crear soporte
                     </b-dropdown-item>
                     <b-dropdown-item  @click="goToRouter('soporte')">
                         Descubrir
                     </b-dropdown-item>
+                    <b-dropdown-item  @click="goToRouter('miSoporte')" v-if="tipoUsuario != 'Normal' && hayUsuario">
+                        Mi soporte
+                    </b-dropdown-item>
                 </b-nav-item-dropdown>
-                <b-nav-item v-if="tipoUsuario != 1" @click="goToRouter('administracion')">Administracion</b-nav-item>
+                <b-nav-item-dropdown text="Administracion" right v-if="tipoUsuario == 'Administrador' && hayUsuario">
+                    <b-dropdown-item  @click="goToRouter('administracion/notificaciones')">
+                        Notificaciones
+                    </b-dropdown-item>
+                    <b-dropdown-item  @click="goToRouter('administracion/reportes')">
+                        Reportes
+                    </b-dropdown-item>
+                    <b-dropdown-item  @click="goToRouter('administracion/confirmaciones')">
+                        Confirmaciones
+                    </b-dropdown-item>
+                    <b-dropdown-item  @click="goToRouter('administracion/bloqueos')">
+                        Bloqueos
+                    </b-dropdown-item>
+                </b-nav-item-dropdown>
                 <!-- Iconos -->
                 <b-nav-item>
                     <message-icon v-if="hayUsuario" @click="goToRouter('mensajes')"/>
                 </b-nav-item>
                 <b-nav-item>
-                    <alertbox-icon v-if="hayUsuario"/>
+                    <alertbox-icon v-if="hayUsuario" @click="goToRouter('notificaciones')"/>
                 </b-nav-item>
                 <b-nav-item>
                     <account-icon @click="goToRouter('register')" v-if="!hayUsuario"/>
@@ -67,7 +81,7 @@
 export default {
     data () {
         return {
-
+            tagsBuscar: '',
         }
     },
     methods: {
@@ -76,12 +90,20 @@ export default {
         },
         logout () {
             this.$store.dispatch('logout')
+        },
+        buscar () {
+            let tagsSeparados = this.tagsBuscar.split(' ')
+            this.goToRouter('busqueda/' + JSON.stringify(tagsSeparados))
+            // this.$store.dispatch('buscar', tagsSeparados)
+        },
+        separarTags (tags) {
+            
         }
     },
     computed: {
         hayUsuario () {
             let user = this.$store.getters.getUsuario
-            if (user.idUsuario)
+            if (user)
                 return true
             else
                 return false
@@ -90,8 +112,10 @@ export default {
           return this.$store.getters.getUsuario
         },
         tipoUsuario () {
+            if (!this.usuario)
+                return 0
             let user = this.$store.getters.getUsuario
-            return user.idTipoDeCuenta
+            return user.nombredetipo
         }
     }
 }

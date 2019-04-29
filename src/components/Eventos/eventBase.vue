@@ -5,7 +5,6 @@
                 <b-row class="noPadding">
                     <b-col md="12" class="noPadding">
                         <b-row class="noPadding">
-                            
                         </b-row>
                     </b-col>
                     <b-col md="12" style="overflow: hidden; height: 300px;" class="noPadding">
@@ -21,7 +20,10 @@
                         <b-card-text class="text-left">
                             <b-row >
                                 <h4 class="h4 my-auto">{{evento.titulo}}</h4>
-                                <b-button class="ml-auto" size="sm" :disabled="eventoPasado(evento)"
+                                <b-button size="sm" variant="danger" class="ml-2" @click="reportar(evento)" v-if="hayUsuario">
+                                    Reportar
+                                </b-button>
+                                <b-button class="ml-auto" size="sm" :disabled="eventoPasado(evento)" v-if="hayUsuario"
                                 variant="primary" @click="registrarAsistencia(evento)">
                                     ASISTIRE
                                 </b-button>
@@ -47,6 +49,21 @@
                                     ( de {{evento.calificaciones.length}} calificacion[es] )
                                 </div>
                             </b-row>
+                            <b-row class="d-flex">
+                                <div class="my-auto">
+                                    <b-row>
+                                        Tags: 
+                                        <div v-if="evento.tags.length > 0">
+                                            <b-badge class="mr-1" v-for="(tag, index) in evento.tags" :key="index">
+                                                {{tag.name}}
+                                            </b-badge>
+                                        </div>
+                                        <div v-else>
+                                            Sin tags
+                                        </div>
+                                    </b-row>
+                                </div>
+                            </b-row>
                             <hr class="my-3">
                             <b-row class="text-center">
                                 <b-col md="4">
@@ -61,7 +78,7 @@
                                 </b-col>
                             </b-row>
                             <hr class="my-3">
-                            <b-row v-if="eventoPasado(evento)">
+                            <b-row v-if="eventoPasado(evento) && hayUsuario">
                                 <h6 class="text-muted my-auto">¿Que te parecio el evento?</h6>
                                 <b-input-group prepend="0" append="5" class="my-2">
                                     <b-form-input type="range" min="0" max="5" v-model="calificar"/>
@@ -94,7 +111,14 @@ export default {
         usuario () {
             let user = this.$store.getters.getUsuario
             return user
-        }
+        },
+        hayUsuario () {
+            let user = this.$store.getters.getUsuario
+            if (user)
+                return true
+            else
+                return false
+        },
     },
     methods: {
         eventoPasado (evento) {
@@ -139,6 +163,24 @@ export default {
         goToRouter (route) {
           this.$router.push("/"+route)
         },
+        reportar (publicacion) {
+            let mensaje = ''
+            do{
+                mensaje = prompt('Cuentanos porque reportaste eso')
+            }while(mensaje == null || mensaje == 0 );
+
+            let descicion = confirm('Desea mandar su reporte?')
+            let payload = {
+                mensaje: mensaje,
+                contenido: publicacion,
+                tipo: 'evento',
+                idUsuario: publicacion.idUsuario,
+            }
+            if (descicion) {
+                this.$store.dispatch('generarReporte', payload)
+            }
+            // console.log("publicacion", publicacion)
+        }
     }
 }
 </script>

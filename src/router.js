@@ -10,8 +10,16 @@ import MenuConfig from './components/Configuracion/configBase.vue';
 import VerPerfil from './components/Perfil/verPerfil.vue';
 import CrearEventos from './components/Contenidos/eventos/crearEvento.vue';
 import CrearTaller from './components/Contenidos/talleres/crearTaller.vue';
+import MiSoporte from './components/Contenidos/talleres/misTalleres.vue';
+import VerificarTaller from './components/Contenidos/talleres/verificarTaller.vue';
 import MainTalleres from './components/Contenidos/talleres/talleresMain.vue';
 import MainMensajes from './components/Contenidos/mensajes/mensajesMain.vue';
+import MainConfirmaciones from './components/Administracion/confirmaciones.vue';
+import AdminNotificaciones from './components/Administracion/notificaciones.vue';
+import AdminReportes from './components/Administracion/reportes/reportesMain.vue';
+import AdminBloqueos from './components/Administracion/bloqueos/bloqueosMain.vue';
+import UserNotificaciones from './components/Notificaciones/notificacionesMain.vue';
+import Busqueda from './components/Contenidos/busqueda.vue';
 
 Vue.use(Router);
 
@@ -68,6 +76,61 @@ export default new Router({
       path: '/mensajes',
       name: 'Mensajes',
       component: MainMensajes,
+    },
+    {
+      path: '/mensajes/:idChat',
+      name: 'Mensajes',
+      component: MainMensajes,
+    },
+    {
+      path: '/MiSoporte',
+      name: 'Mi Soporte',
+      component: MiSoporte,
+    },
+    {
+      path: '/verificarTaller/:idTaller',
+      name: 'Mi Soporte',
+      component: VerificarTaller,
+    },
+    {
+      path: '/administracion/confirmaciones',
+      name: 'Confirmaciones',
+      component: MainConfirmaciones,
+    },
+    {
+      path: '/administracion/confirmaciones/:idVerificacion',
+      name: 'Confirmaciones',
+      component: MainConfirmaciones,
+    },
+    {
+      path: '/administracion/notificaciones',
+      name: 'Administrador Notificaciones',
+      component: AdminNotificaciones,
+    },
+    {
+      path: '/administracion/reportes',
+      name: 'Administrador Reportes',
+      component: AdminReportes,
+    },
+    {
+      path: '/administracion/reportes/:idReporte',
+      name: 'Administrador Reportes',
+      component: AdminReportes,
+    },
+    {
+      path: '/administracion/bloqueos',
+      name: 'Administrador Bloqueos',
+      component: AdminBloqueos,
+    },
+    {
+      path: '/notificaciones',
+      name: 'Notificaciones Usuario',
+      component: UserNotificaciones,
+    },
+    {
+      path: '/busqueda/:tags',
+      name: 'Busqueda de contenido',
+      component: Busqueda,
     },
   ],
 });

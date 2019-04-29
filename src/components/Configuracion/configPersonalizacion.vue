@@ -66,7 +66,6 @@ export default {
       },
       onFilePicked () {
           this.imagen = this.$refs.fileInput.files[0];
-          console.log(this.imagen)
       },
       updatePersonalizacion () {
         let newData = {

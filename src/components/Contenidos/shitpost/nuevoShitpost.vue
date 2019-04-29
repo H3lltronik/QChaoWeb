@@ -7,16 +7,32 @@
             </b-col>
             <b-col md="12" class="mt-2">
                 <b-row>
-                    <b-col cols="3" xl="4">
+                    <b-col cols="6" >
+                        <!-- https://www.npmjs.com/package/vue-tags-component -->
+                            <vue-tags class="mx-auto my-auto mt-3"
+                                style="z-index: 10;"
+                                :active="activeTags"
+                                :max-height="100"
+                                :all="allTags"
+                                :element-count-for-start-arrow-scrolling="1"
+                                :tab-index="2"
+                                :tag-creation-enabled="true"
+                                :colors-enabled="false"
+                                :tag-color-default="'green'"
+                                :tag-list-label="'Seleccione sus tags'"
+                                :placeholder="'Seleccione sus tags'"
+                                @on-tag-added="onTagAdded"
+                                @on-tag-removed="onTagRemoved"
+                                @on-tag-list-opened="onTagListOpened"
+                                @on-tag-list-closed="onTagListClosed"
+                                @on-tag-created="onTagCreated"/>
+                    </b-col>
+                    <b-col cols="3" class="my-auto">
                         <b-button variant="primary" block @click="onPickFile" size="sm">Seleccionar</b-button>
                         <input type="file" ref="fileInput" style="display: none;" :accept="accept[type]+'/*'" @change="onFilePicked">
                     </b-col>
-                    <b-col cols="3" xl="3">
+                    <b-col cols="3" class="my-auto">
                             <b-form-radio-group buttons v-model="type" :options="options" size="sm"/>
-                    </b-col>
-                    <b-col cols="6" xl="5">
-                        <b-form-input size="sm" type="text" placeholder="Tags separados por coma"
-                        v-model="tags"/>
                     </b-col>
                 </b-row>
                 <b-row>
@@ -31,10 +47,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
     data () {
         return {
-            tags: null,
             type: '1',
             options: [
                 { text: 'Video', value: 0},
@@ -43,7 +59,15 @@ export default {
             accept: ['video', 'image'],
             file: null,
             descripcion: null,
+            allTags: [],
+            activeTags: [],
         }
+    },
+    created () {
+        this.$store.dispatch('loadTags').then(res => {
+            console.log(res)
+            this.allTags = res
+        })
     },
     methods: {
         publicar () {
@@ -52,33 +76,50 @@ export default {
                 file: this.file,
                 descripcion: this.descripcion,
                 idUsuario: this.usuario.idUsuario,
-                nombreUsuario: this.usuario.Nombre
+                nombreUsuario: this.usuario.nickname
             }
             if (this.file) {
                 this.$store.dispatch('publicarShitpost', publicacion)
-                console.log(publicacion)
             } else {
                 alert("Favor de elegir un archivo")
             }
         },
         generateTags () {
-            let tags = this.tags
-            if (tags !== null) {
-                if (tags.length >= 2) {
-                    tags = tags.replace(/\s/g, '');
-                    return tags.split(",")
-                } else {
-                    return 'sin tags'
-                }
-            }
-            return 'X'
+            let aux = []
+            this.activeTags.forEach(element => {
+                aux.push(JSON.stringify(element))
+            });
+            return aux
         },
         onPickFile () {
             this.$refs.fileInput.click()
         },
         onFilePicked () {
             this.file = this.$refs.fileInput.files[0];
-            console.log(this.file)
+        },
+        onTagAdded ($event) {
+            this.activeTags.push($event)
+        },
+        onTagRemoved ($event) {
+            console.log('removed', $event)
+            let index = this.activeTags.map(function(e) { return e.id; }).indexOf($event.id);
+            this.activeTags.splice(index, 1)
+        },
+        onTagListOpened ($event) {
+            console.log("Open", $event)
+        },
+        onTagListClosed ($event) {
+
+        },
+        onTagCreated ($event) {
+            console.log($event)
+        
+            let aux = {...$event}
+            aux.id = this.numeroRandom(1, 500)
+            this.allTags.push(aux)
+        },
+        numeroRandom (min, max) {
+            return Math.floor(Math.random() * (+max - +min)) + +min; 
         }
     },
     computed: {

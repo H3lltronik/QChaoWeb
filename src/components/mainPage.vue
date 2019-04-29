@@ -9,7 +9,8 @@
                             <left-aside></left-aside>
                         </b-col>
                         <b-col md="6" >
-                            <shitpost-base></shitpost-base>
+                            <nuevo-shitpost v-if="hayUsuario"/>
+                            <shitpost-base :publicaciones="publicaciones"></shitpost-base>
                             <event-base :eventos="eventos"></event-base>
                             <taller-base :talleres="talleres"></taller-base>
                         </b-col>
@@ -33,8 +34,19 @@ export default {
     created () {
         this.$store.dispatch('cargarEventos')
         this.$store.dispatch('cargarTalleres')
+        this.$store.dispatch('loadShitpost')
     },
     computed: {
+        publicaciones () {
+            let auxPublicaciones = this.$store.getters.getShitpost
+            if (auxPublicaciones.length > 0) {
+
+                return auxPublicaciones
+
+            } else {
+                return []
+            }
+        },
         eventos () {
             let eventos = this.$store.getters.getEventos
             if (eventos.length > 0) {
@@ -50,7 +62,14 @@ export default {
             } else {
                 return []
             }
-        }
+        },
+        hayUsuario () {
+            let user = this.$store.getters.getUsuario
+            if (user)
+                return true
+            else
+                return false
+        },
     }
 }
 </script>
