@@ -9,7 +9,9 @@
                             <left-aside></left-aside>
                         </b-col>
                         <b-col md="6" >
-                            <taller-base :talleres="talleres"></taller-base>
+                            <div v-if="talleres.length > 0">
+                                <taller-base :talleres="talleres"></taller-base>
+                            </div>
                         </b-col>
                         <b-col md="3">
                             <right-aside></right-aside>
@@ -29,15 +31,34 @@ export default {
         }
     },
     created () {
-        this.$store.dispatch('loadTalleresUsuario', this.usuario.idUsuario)
+        
     },
     computed: {
         ...mapGetters({
-            talleres: 'getTalleresUsuario',
+            
         }),
         usuario () {
             let user = this.$store.getters.getUsuario
             return user
+        },
+        talleres () {
+            let talleres = this.$store.getters.getTalleresUsuario
+            if (talleres) {
+                return talleres
+            } else {
+                return []
+            }
+        }
+    },
+    watch: {
+        usuario: {
+            handler(newVal, oldVal){
+                if (!oldVal.idUsuario && newVal.idUsuario) {
+                    console.log("idUsuario", newVal.idUsuario)
+                    this.$store.dispatch('loadTalleresUsuario', newVal.idUsuario)
+                }
+            },
+            deep: true
         }
     },
     methods: {

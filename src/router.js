@@ -83,7 +83,7 @@ export default new Router({
       component: MainMensajes,
     },
     {
-      path: '/MiSoporte',
+      path: '/miSoporte',
       name: 'Mi Soporte',
       component: MiSoporte,
     },

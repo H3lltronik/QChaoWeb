@@ -65,7 +65,7 @@
                                 <div class="my-auto">
                                     <b-row>
                                         Tags: 
-                                        <div v-if="taller.tags.length > 0">
+                                        <div v-if="taller.tags != undefined">
                                             <b-badge class="mr-1" v-for="(tag, index) in taller.tags" :key="index">
                                                 {{tag.name}}
                                             </b-badge>

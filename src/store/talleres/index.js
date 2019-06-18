@@ -64,8 +64,10 @@ export default({
     loadTalleresUsuario ({commit}, idUsuario) {
       let formData = new FormData ()
       formData.set('idUsuario', idUsuario)
+      console.log("idUsuario STORE", idUsuario)
       axios.post('http://localhost/Qchao/conexiones/usuario/talleres/getTalleresUsuario.php', formData).then(response => {
         let data = response.data
+        console.log("Mi soporte", data)
         if (data.status.includes('OK')) {
           commit('setTalleresUsuario', data.talleres)
         }
