@@ -31,7 +31,9 @@ export default {
         }
     },
     created () {
-        
+      setTimeout(() => {
+          this.$store.dispatch('loadTalleresUsuario', this.usuario.idUsuario)
+      }, 1000);  
     },
     computed: {
         ...mapGetters({
@@ -51,15 +53,15 @@ export default {
         }
     },
     watch: {
-        usuario: {
-            handler(newVal, oldVal){
-                if (!oldVal.idUsuario && newVal.idUsuario) {
-                    console.log("idUsuario", newVal.idUsuario)
-                    this.$store.dispatch('loadTalleresUsuario', newVal.idUsuario)
-                }
-            },
-            deep: true
-        }
+        // usuario: {
+        //     handler(newVal, oldVal){
+        //         if (!oldVal.idUsuario && newVal.idUsuario) {
+        //             console.log("idUsuario", newVal.idUsuario)
+        //             this.$store.dispatch('loadTalleresUsuario', newVal.idUsuario)
+        //         }
+        //     },
+        //     deep: true
+        // }
     },
     methods: {
         getImageUrl (taller, imgIndex) {

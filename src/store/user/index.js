@@ -33,7 +33,6 @@ export default({
     actions: {
         async loadSesiones ({commit, getters}) {
           let user = getters.getUsuario
-          console.log("loadSesiones", user)
           let formData = new FormData()
 
           if (!user) {
@@ -43,6 +42,7 @@ export default({
           formData.set('idUsuario', user.idUsuario)
           await axios.post('http://localhost/QChao/conexiones/usuario/getSesiones.php', formData).then(response => {
             let data = response.data
+            console.log("loadSesiones", user, data)
             if (data.status.includes('OK')) {
               commit('setSesiones', data.sesiones)
             } else {
@@ -105,6 +105,7 @@ export default({
           axios.post('http://localhost/Qchao/conexiones/usuario/loginByToken.php', formData).then(response => {
             let data = response.data
             if (data.status.includes('OK')) {
+              data.user.token = token
               commit('setUsuario', data.user)
               dispatch('loadSesiones')
               dispatch('loadChatsInfo')
@@ -124,12 +125,12 @@ export default({
           formData.set('token', token)
 
           axios.post('http://localhost/Qchao/conexiones/usuario/logout.php', formData).then(response => {
-            console.log("Debug cerar sesion", response.data)
+            console.log("Debug cerar sesion", response.data, getters.getUsuario)
             if (response.data.status.includes('OK')) {
               alert("Sesion cerrada")
               localStorage.removeItem("usuario")
               commit('removeUser')
-              router.go(0)
+              router.push('/')
             } else {
               alert("NO SE PUDO CERRAR LA SESION")
               console.log("Logout error: ", response.data)
