@@ -89,15 +89,23 @@ export default {
             return "http://localhost/Qchao/media/usuarios/" + idUsuario + ".jpg"
         },
         enviarMensaje () {
+            
+            let idDestino = this.activeChat.idDestino
+            if (idDestino == this.usuario.idUsuario) {
+                idDestino = this.activeChat.idRemitente
+            }
+
             let payload = {
                 idChat: this.activeChat.idChat,
                 mensaje: {
                     mensaje: this.mensajeUsuario,
                     idUsuario: this.usuario.idUsuario,
-                    idDestino: this.activeChat.idDestino, // Para notificaciones
-                    nickname: this.activeChat.nombreOtro // Tambien para notificaciones
+                    idDestino: idDestino, // Para notificaciones
+                    nickname: this.usuario.nickname // Tambien para notificaciones
                 },
             }
+            console.log("MENSAJE ENVIADO: ", payload)
+            console.log("CHAT ACTIVO: ", this.activeChat)
             this.$store.dispatch('enviarMensaje', payload).then(res => {
                 this.mensajeUsuario = ''
                 this.scrollAlFondo(0)

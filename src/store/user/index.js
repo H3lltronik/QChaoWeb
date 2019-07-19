@@ -123,6 +123,7 @@ export default({
           let token = getters.getUsuario.token
           let formData = new FormData()
           formData.set('token', token)
+          alert("token: " + token);
 
           axios.post('http://localhost/Qchao/conexiones/usuario/logout.php', formData).then(response => {
             console.log("Debug cerar sesion", response.data, getters.getUsuario)
@@ -154,7 +155,6 @@ export default({
           })
         },
         personalizarPerfil ({commit}, newData) {
-          // T A G S P E N D I E N T E S
           let formData = new FormData ()
 
           if (newData.idUsuario)

@@ -12,7 +12,10 @@
                             <b-row>
                                 <b-col md="8">
                                     <b-row class="my-auto">
-                                        <b-img fluid style="max-height: 3rem;" src="./imagenes/computer.png"/>
+                                        <!-- Si la sesion es de una computadora... -->
+                                        <b-img fluid style="max-height: 3rem;" src="./imagenes/computer.png" v-if="!item.sesionInfo.mobile"/>
+                                        <!-- Si la sesion es de un celular... -->
+                                        <b-img fluid style="max-height: 3rem;" src="./imagenes/celular.png" v-else/>
                                         <h4 class="ml-3 my-auto">{{item.sesionInfo.os}} - {{item.sesionInfo.name}} {{item.sesionInfo.version}}</h4>
                                     </b-row>
                                 </b-col>
