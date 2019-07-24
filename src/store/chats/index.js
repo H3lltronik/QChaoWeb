@@ -6,41 +6,7 @@ import * as firebase from 'firebase'
 
 export default({
     state: {
-        chats: [
-            // {
-            //     idChat: '1',
-            //     idDestino: 11,
-            //     idRemitente: 17,
-            //     imgRemitente: "http://localhost/Qchao/media/usuarios/17.jpg",
-            //     imgDestino: "http://localhost/Qchao/media/usuarios/11.jpg",
-            //     mensajes: [
-            //         {
-            //             idUsuario: 17,
-            //             mensaje: 'Presio'
-            //         },
-            //         {
-            //             idUsuario: 11,
-            //             mensaje: 'Hola joto'
-            //         },
-            //         {
-            //             idUsuario: 11,
-            //             mensaje: 'Saluda'
-            //         },
-            //         {
-            //             idUsuario: 17,
-            //             mensaje: 'Hola'
-            //         },
-            //         {
-            //             idUsuario: 17,
-            //             mensaje: 'Porque no te mueres?'
-            //         },
-            //         {
-            //             idUsuario: 11,
-            //             mensaje: 'Porque me gusta vivir'
-            //         },
-            //     ]
-            // }
-        ],
+        chats: [],
         mensajes: []
     },
     mutations: {
@@ -67,11 +33,12 @@ export default({
     },
     actions: {
         crearChat ({commit, getters}, payload) {
+            let urlBase = getters.getUrlBase
             let formData = new FormData ()
             formData.set('idRemitente', payload.idRemitente)
             formData.set('idDestino', payload.idDestino)
             
-            axios.post('http://localhost/Qchao/conexiones/usuario/chat/crearChat.php', formData).then(response => {
+            axios.post(urlBase + 'conexiones/usuario/chat/crearChat.php', formData).then(response => {
                 let data = response.data
                 if (data.status.includes('OK')) {
                     let idChat = data.idChat
@@ -98,6 +65,7 @@ export default({
             })
         },
         loadChatsInfo ({commit, getters}) {
+            let urlBase = getters.getUrlBase
             if (!getters.getUsuario)
                 return
                 
@@ -105,7 +73,7 @@ export default({
             let formData = new FormData ()
 
             formData.set('idRemitente', idUsuario)
-            axios.post('http://localhost/Qchao/conexiones/usuario/chat/getAllMyChats.php', formData).then(response => {
+            axios.post(urlBase + 'conexiones/usuario/chat/getAllMyChats.php', formData).then(response => {
                 let data = response.data
                 console.log("Chats data", data)
                 if (data.status.includes('OK')) {

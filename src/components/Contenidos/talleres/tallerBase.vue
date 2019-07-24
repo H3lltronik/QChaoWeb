@@ -4,8 +4,10 @@
             <b-container class="noPadding">
                 <b-row class="noPadding w-100">
                     <b-col md="12" class="noPadding">
-                        <b-row class="noPadding">
-                            
+                        <b-row class="noPadding" v-if="taller.idUsuario == usuario.idUsuario">
+                            <b-button size="sm" variant="primary"  @click="editar(taller)" v-if="hayUsuario">
+                                Editar
+                            </b-button>
                         </b-row>
                     </b-col>
                     <b-col md="12" style="overflow: hidden; height: 300px;" class="noPadding">
@@ -125,10 +127,15 @@ export default {
     },
     methods: {
         getImageUrl (taller, imgIndex) {
-            return 'http://localhost/QChao/media/establecimientos/' + taller.idEstablecimiento + '/' + (imgIndex-1) + '.jpg';
+            let urlBase = this.$store.getters.getUrlBase
+            return urlBase + 'media/establecimientos/' + taller.idEstablecimiento + '/' + (imgIndex-1) + '.jpg';
         },
         goToRouter (route) {
           this.$router.push("/"+route)
+        },
+        editar (publicacion) {
+            this.$router.push('editarTaller/')
+            this.$store.commit('setTallerAEditar', publicacion)
         },
         reportar (publicacion) {
             let mensaje = ''

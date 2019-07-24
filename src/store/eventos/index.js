@@ -5,6 +5,8 @@ import router from '../../router'
 export default({
   state: {
     eventos: [],
+    eventoAEditar: {}, // Aqui se guarda el evento al que se le dad click a editar
+    eventosUsuario: []
   },
   mutations: {
     setEventos (state, eventos) {
@@ -24,10 +26,17 @@ export default({
           return auxFind.idEvento == currEvento.idEvento
       })
       evento.asistentes--
+    },
+    setEditarEvento (state, evento) {
+      state.eventoAEditar = evento
+    },
+    setEventosUsuario (state, payload) {
+      state.eventosUsuario = payload
     }
   },
   actions: {
     crearEvento ({commit}, payload) {
+      let urlBase = getters.getUrlBase
       let formData = new FormData ()
       let imagenes = payload.imagenes
       formData.append('idUsuario', payload.idUsuario)
@@ -43,7 +52,7 @@ export default({
         formData.append('imagen_'+i, imagenes[i])
       }
 
-      axios.post('http://localhost/QChao/conexiones/contenido/eventos/crearEvento.php', formData, 
+      axios.post(urlBase + 'conexiones/contenido/eventos/crearEvento.php', formData, 
       {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
         if (response.data.status.includes('OK')) {
           alert('SE HA CREADO EL EVENTO')
@@ -53,8 +62,9 @@ export default({
         console.log(error)
       })
     },
-    cargarEventos ({commit}) {
-      axios.post('http://localhost/QChao/conexiones/contenido/eventos/getAllEventos.php').then(response => {
+    cargarEventos ({commit, getters}) {
+      let urlBase = getters.getUrlBase
+      axios.post(urlBase + 'conexiones/contenido/eventos/getAllEventos.php').then(response => {
         let eventos = response.data.eventos
         if (response.data.status.includes('OK')) {
           console.log("Eventos", eventos)
@@ -64,12 +74,13 @@ export default({
         console.log(error)
       })
     },
-    calificarEvento ({commit}, evento) {
+    calificarEvento ({commit, getters}, evento) {
+      let urlBase = getters.getUrlBase
       let formData = new FormData ()
       formData.set('idUsuario', evento.idUsuario)
       formData.set('idEvento', evento.idEvento)
       formData.set('calificacion', evento.calificacion)
-      axios.post('http://localhost/QChao/conexiones/contenido/eventos/puntuarEvento.php', formData).then(response => {
+      axios.post(urlBase + 'conexiones/contenido/eventos/puntuarEvento.php', formData).then(response => {
         console.log('Puntuar', response.data)
         if (response.data.status.includes('OK')){
           alert('SE REGISTRO LA CALIFICACION')
@@ -81,11 +92,12 @@ export default({
       })
     },
     registrarAsistencia ({commit}, evento) {
+      let urlBase = getters.getUrlBase
       let formData = new FormData ()
       formData.set('idUsuario', evento.idUsuario)
       formData.set('idEvento', evento.idEvento)
 
-      axios.post('http://localhost/QChao/conexiones/contenido/eventos/registrarAsistencia.php', formData).then(response => {
+      axios.post(urlBase + 'contenido/eventos/registrarAsistencia.php', formData).then(response => {
         console.log('Puntuar', response.data)
         if (response.data.status.includes('OK')){
           alert(response.data.response)
@@ -100,11 +112,57 @@ export default({
       }).catch(error => {
         console.log(error)
       })
+    },
+    loadEventosUsuario ({commit, getters}, idUsuario) {
+      let urlBase = getters.getUrlBase
+      let formData = new FormData ()
+      formData.set('idUsuario', idUsuario)
+      axios.post(urlBase + 'conexiones/contenido/eventos/getEventosUsuario.php', formData).then(response => {
+        let data = response.data
+        if (data.status.includes('OK')) {
+          commit('setEventosUsuario', data.eventos)
+        }
+      }).catch(error => {
+        console.log("Error Eventos usuario", error)
+      })
+    },
+    editarEvento ({commit, getters}, payload) {
+      let urlBase = getters.getUrlBase
+      let formData = new FormData ()
+      let imagenes = payload.imagenes
+      formData.append('idEvento', payload.idEvento)
+      formData.append('nombre', payload.nombre)
+      formData.append('descripcion', payload.descripcion)
+      formData.append('domicilio', payload.domicilio)
+      formData.append('fecha', payload.fecha)
+      formData.append('entrada', payload.entrada)
+      formData.append('ciudad', payload.ciudad)
+      formData.append('tags', JSON.stringify(payload.tags))
+
+      for(let i = 0; i < imagenes.length; i++) {
+        formData.append('imagen_'+i, imagenes[i])
+      }
+
+      axios.post(urlBase + 'conexiones/contenido/eventos/editarEvento.php', formData, 
+      {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
+        if (response.data.status.includes('OK')) {
+          alert('SE HA EDITADO EL EVENTO')
+        } else 
+          alert('HUBO UN ERROR AL CREAR EL EVENTO')
+      }).catch(error => {
+        console.log(error)
+      })
     }
   },
   getters: {
     getEventos (state) {
       return state.eventos.reverse()
+    },
+    getEditarEvento (state) {
+      return state.eventoAEditar
+    },
+    getEventosUsuario (state) {
+      return state.eventosUsuario.reverse()
     }
   }
 })

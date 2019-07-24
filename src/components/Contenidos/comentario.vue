@@ -50,7 +50,7 @@ export default {
     },
     computed: {
         imagen () {
-            let urlBase = this.$store.getters.urlBase
+            let urlBase = this.$store.getters.getUrlBase
             return urlBase + 'media/usuarios/' + this.idUsuario + '.jpg'
         }
     }

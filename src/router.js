@@ -19,6 +19,9 @@ import AdminNotificaciones from './components/Administracion/notificaciones.vue'
 import AdminReportes from './components/Administracion/reportes/reportesMain.vue';
 import AdminBloqueos from './components/Administracion/bloqueos/bloqueosMain.vue';
 import UserNotificaciones from './components/Notificaciones/notificacionesMain.vue';
+import EditarEvento from './components/Eventos/editarEvento.vue';
+import EditarTaller from './components/Contenidos/talleres/editarTaller.vue';
+import MisEventos from './components/Eventos/misEventos.vue';
 import Busqueda from './components/Contenidos/busqueda.vue';
 
 Vue.use(Router);
@@ -131,6 +134,21 @@ export default new Router({
       path: '/busqueda/:tags',
       name: 'Busqueda de contenido',
       component: Busqueda,
+    },
+    {
+      path: '/editarEvento/',
+      name: 'Editar evento',
+      component: EditarEvento,
+    },
+    {
+      path: '/misEventos/',
+      name: 'Eventos',
+      component: MisEventos,
+    },
+    {
+      path: '/editarTaller/',
+      name: 'Editar taller',
+      component: EditarTaller,
     },
   ],
 });

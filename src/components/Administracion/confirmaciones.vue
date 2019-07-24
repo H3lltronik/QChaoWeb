@@ -46,7 +46,7 @@ export default {
     },
     methods: {
         getImageUrl (confirmacion, imgIndex) {
-            let url = 'http://localhost/QChao/media/verificaciones/' + confirmacion.idTaller + '/' + (imgIndex) + '.jpg'
+            let url = this.urlBase + 'media/verificaciones/' + confirmacion.idTaller + '/' + (imgIndex) + '.jpg'
             return url
         },
         verTaller (idTaller) {
@@ -65,6 +65,7 @@ export default {
         ...mapGetters({
             talleres: 'getTalleresAux',
             confirmaciones: 'getConfirmaciones',
+            urlBase: 'getUrlBase',
         }),
         usuario () {
             let user = this.$store.getters.getUsuario

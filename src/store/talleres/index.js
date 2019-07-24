@@ -9,6 +9,7 @@ export default({
       talleres: [],
       talleresUsuario: [],
       talleresAux: [],
+      tallerAEditar: {},
   },
   mutations: {
       setTalleres (state, talleres) {
@@ -19,10 +20,14 @@ export default({
       },
       setTalleresAux (state, payload) {
         state.talleresAux = payload
+      },
+      setTallerAEditar (state, payload) {
+        state.tallerAEditar = payload
       }
   },
   actions: {
-    crearSoporte ({commit}, payload) {
+    crearSoporte ({commit, getters}, payload) {
+      let urlBase = getters.getUrlBase
         let formData = new FormData ()
         let imagenes = payload.imagenes
         formData.append('idUsuario', payload.idUsuario)
@@ -39,7 +44,7 @@ export default({
             formData.append('imagen_'+i, imagenes[i])
         }
 
-        axios.post('http://localhost/QChao/conexiones/contenido/talleres/crearTaller.php', formData, 
+        axios.post(urlBase + 'conexiones/contenido/talleres/crearTaller.php', formData, 
         {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
           console.log("Debug", response.data)
             if (response.data.status.includes('OK')) {
@@ -50,8 +55,38 @@ export default({
             console.log(error)
         })
     },
-    cargarTalleres ({commit}) {
-      axios.post('http://localhost/QChao/conexiones/contenido/talleres/getAllTalleres.php').then(response => {
+    editarSoporte ({commit, getters}, payload) {
+      let urlBase = getters.getUrlBase
+        let formData = new FormData ()
+        let imagenes = payload.imagenes
+        formData.append('idEstablecimiento', payload.idEstablecimiento)
+        formData.append('nombre', payload.nombre)
+        formData.append('descripcion', payload.descripcion)
+        formData.append('domicilio', payload.domicilio)
+        formData.append('contacto', payload.contacto)
+        formData.append('horario', payload.horario)
+        formData.append('ciudad', payload.ciudad)
+        formData.append('tipo', payload.tipo)
+        formData.append('tags', JSON.stringify(payload.tags))
+
+        for(let i = 0; i < imagenes.length; i++) {
+            formData.append('imagen_'+i, imagenes[i])
+        }
+
+        axios.post(urlBase + 'conexiones/contenido/talleres/editarTaller.php', formData, 
+        {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
+          console.log("Debug", response.data)
+            if (response.data.status.includes('OK')) {
+            alert('SE HA EDITADO EL TALLER')
+            } else 
+            alert('HUBO UN ERROR AL EDITAR EL TALLER')
+        }).catch(error => {
+            console.log(error)
+        })
+    },
+    cargarTalleres ({commit, getters}) {
+      let urlBase = getters.getUrlBase
+      axios.post(urlBase + 'conexiones/contenido/talleres/getAllTalleres.php').then(response => {
         let talleres = response.data.talleres
         if (response.data.status.includes('OK')) {
           commit('setTalleres', talleres)
@@ -61,11 +96,12 @@ export default({
         console.log(error)
       })
     },
-    loadTalleresUsuario ({commit}, idUsuario) {
+    loadTalleresUsuario ({commit, getters}, idUsuario) {
+      let urlBase = getters.getUrlBase
       let formData = new FormData ()
       formData.set('idUsuario', idUsuario)
       console.log("idUsuario STORE", idUsuario)
-      axios.post('http://localhost/Qchao/conexiones/usuario/talleres/getTalleresUsuario.php', formData).then(response => {
+      axios.post(urlBase + 'conexiones/usuario/talleres/getTalleresUsuario.php', formData).then(response => {
         let data = response.data
         console.log("Mi soporte", data)
         if (data.status.includes('OK')) {
@@ -75,7 +111,8 @@ export default({
         console.log("Error Talleres usuario", error)
       })
     },
-    solicitarVerficicacion ({commit}, payload) {
+    solicitarVerficicacion ({commit, getters}, payload) {
+      let urlBase = getters.getUrlBase
       let formData = new FormData ()
       let imagenes = payload.imagenes
       formData.append('idTaller', payload.idTaller)
@@ -89,7 +126,7 @@ export default({
         formData.append('imagen_'+i, imagenes[i])
       }
 
-      axios.post('http://localhost/Qchao/conexiones/usuario/talleres/solicitarVerificacion.php', formData, 
+      axios.post(urlBase + 'conexiones/usuario/talleres/solicitarVerificacion.php', formData, 
       {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
         let data = response.data
         console.log("Data", data)
@@ -113,8 +150,9 @@ export default({
         console.log("Error verificacion taller", error)
       })
     },
-    loadTalleresAux ({commit}) {
-      axios.post('http://localhost/Qchao/conexiones/administracion/getTalleresSinConfirmar.php').then(response => {
+    loadTalleresAux ({commit, getters}) {
+      let urlBase = getters.getUrlBase
+      axios.post(urlBase + 'conexiones/administracion/getTalleresSinConfirmar.php').then(response => {
         let data = response.data
         if (data.status.includes('OK')) {
           commit('setTalleresAux', data.talleres)
@@ -129,10 +167,13 @@ export default({
           return state.talleres.reverse()
       },
       getTalleresUsuario (state) {
-          return state.talleresUsuario
+          return state.talleresUsuario.reverse()
       },
       getTalleresAux (state) {
         return state.talleresAux
+      },
+      getTallerAEditar (state) {
+        return state.tallerAEditar
       }
   }
 })

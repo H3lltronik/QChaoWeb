@@ -4,7 +4,7 @@
         <!-- El fixed="top" es para que se quede pegada arriba aunque baje por la pagina, siempre se muestra -->
         <b-navbar type="dark" variant="dark" fixed="top">
             <!-- navbar-bran es el componente para el logo o nombre que va en la barra de tareas de arriba -->
-            <b-navbar-brand href="#" @click="goToRouter('')">QChaoWeb {{hayUsuario}}</b-navbar-brand>
+            <b-navbar-brand href="#" @click="goToRouter('')">QChaoWeb</b-navbar-brand>
             <!-- Los elementos del navbar se tiene que agrupar y separar por navbar-nav, en este caso
                 el componente que tiene agrupado es un nav-form para la barra de busqueda-->
             <b-navbar-nav class="ml-auto">
@@ -30,6 +30,9 @@
                     </b-dropdown-item>
                     <b-dropdown-item @click="goToRouter('events')">
                         Descubrir
+                    </b-dropdown-item>
+                    <b-dropdown-item  @click="goToRouter('misEventos')" v-if="tipoUsuario != 'Normal' && hayUsuario">
+                        Mis eventos
                     </b-dropdown-item>
                 </b-nav-item-dropdown>
 

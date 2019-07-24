@@ -80,7 +80,7 @@ export default {
     },
     methods: {
         getImageUrl (confirmacion, imgIndex) {
-            let url = 'http://localhost/QChao/media/verificaciones/' + confirmacion.idVerificacion + '/' + (imgIndex) + '.jpg'
+            let url = this.urlBase + 'media/verificaciones/' + confirmacion.idVerificacion + '/' + (imgIndex) + '.jpg'
             return url
         },
         verTaller (idTaller) {
@@ -90,7 +90,11 @@ export default {
             this.verTallerId = null
         },
         verificarTaller () {
-            this.$store.dispatch('confirmarTaller', this.confirmacion.idTaller)
+            let payload = {
+                idTaller: this.confirmacion.idTaller,
+                idVerificacion: this.confirmacion.idVerificacion
+            }
+            this.$store.dispatch('confirmarTaller', payload)
         }
     },
     created () {
@@ -101,6 +105,7 @@ export default {
         ...mapGetters({
             talleres: 'getTalleresAux',
             confirmaciones: 'getConfirmaciones',
+            urlBase: 'getUrlBase',
         }),
         usuario () {
             let user = this.$store.getters.getUsuario

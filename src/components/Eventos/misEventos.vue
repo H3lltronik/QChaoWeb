@@ -9,8 +9,8 @@
                             <left-aside></left-aside>
                         </b-col>
                         <b-col md="6" >
-                            <div v-if="talleres.length > 0">
-                                <taller-base :talleres="talleres"></taller-base>
+                            <div v-if="eventos.length > 0">
+                                <event-base :eventos="eventos"></event-base>
                             </div>
                         </b-col>
                         <b-col md="3">
@@ -32,42 +32,19 @@ export default {
     },
     created () {
       setTimeout(() => {
-          this.$store.dispatch('loadTalleresUsuario', this.usuario.idUsuario)
+          this.$store.dispatch('loadEventosUsuario', this.usuario.idUsuario)
       }, 1000);  
     },
     computed: {
         ...mapGetters({
-            
+            eventos: "getEventosUsuario",
         }),
         usuario () {
             let user = this.$store.getters.getUsuario
             return user
         },
-        talleres () {
-            let talleres = this.$store.getters.getTalleresUsuario
-            if (talleres) {
-                return talleres
-            } else {
-                return []
-            }
-        }
-    },
-    watch: {
-        // usuario: {
-        //     handler(newVal, oldVal){
-        //         if (!oldVal.idUsuario && newVal.idUsuario) {
-        //             console.log("idUsuario", newVal.idUsuario)
-        //             this.$store.dispatch('loadTalleresUsuario', newVal.idUsuario)
-        //         }
-        //     },
-        //     deep: true
-        // }
     },
     methods: {
-        getImageUrl (taller, imgIndex) {
-            let urlBase = this.$store.getters.getUrlBase
-            return urlBase + 'media/establecimientos/' + taller.idEstablecimiento + '/' + (imgIndex-1) + '.jpg';
-        },
         goToRouter (route) {
           this.$router.push("/"+route)
         },

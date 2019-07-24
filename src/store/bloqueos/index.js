@@ -13,13 +13,14 @@ export default({
       }
   },
   actions: {
-      async bloquearUsuario ({commit, dispatch}, payload) {
+      async bloquearUsuario ({commit, dispatch, getters}, payload) {
+          let urlBase = getters.getUrlBase
           let formData = new FormData ()
           formData.set('idUsuario', payload.idUsuario)
           formData.set('timestamp', (payload.timestamp / 1000))
           formData.set('dias', payload.dias)
           dispatch('borrarReportes', payload.idUsuario)
-          await axios.post('http://localhost/Qchao/conexiones/administracion/bloqueos/bloquearUsuario.php', formData).then(response => {
+          await axios.post(urlBase + 'conexiones/administracion/bloqueos/bloquearUsuario.php', formData).then(response => {
               let data = response.data
               console.log("Debug", data)
               if (data.status.includes('OK')) {
@@ -35,8 +36,9 @@ export default({
               console.log("Error al generar bloqueo", error)
           })
       },
-      loadBloqueos ({commit}) {
-          axios.post('http://localhost/Qchao/conexiones/administracion/bloqueos/getAllBloqueos.php').then(response => {
+      loadBloqueos ({commit, getters}) {
+          let urlBase = getters.getUrlBase
+          axios.post(urlBase + 'conexiones/administracion/bloqueos/getAllBloqueos.php').then(response => {
               let data = response.data
               console.log("Debug bloqueos", data)
               if (data.status.includes('OK')) {

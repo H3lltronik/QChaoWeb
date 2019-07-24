@@ -143,6 +143,7 @@ export default {
             this.newAccount.city = city
         },
         registerUser () {
+            let urlBase = this.$store.getters.getUrlBase
             let newAccount = this.newAccount
             let type = 0;
             let formData = new FormData()
@@ -160,7 +161,7 @@ export default {
             formData.set('nickname', newAccount.nickname)
             formData.set('ciudad', newAccount.city)
             formData.set('tipoDeCuenta', type)
-            this.axios.post('http://localhost/QChao/conexiones/usuario/crearCuenta.php', formData).then(response => {
+            this.axios.post(urlBase + 'conexiones/usuario/crearCuenta.php', formData).then(response => {
                 alert(response.data.response)
             })
         },

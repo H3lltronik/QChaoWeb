@@ -24,13 +24,13 @@
                                 </b-form-group>
                             </b-col>
                         </b-row>
-                        <b-row>
+                        <!-- <b-row>
                             <b-col>
                                 <b-form-group label="Tags o gustos por los autos" class="my-3">
                                     <b-form-input v-model="tags"></b-form-input>
                                 </b-form-group>
                             </b-col>
-                        </b-row>
+                        </b-row> -->
                         <b-row>
                             <b-col>
                                 <b-form-group label="Descripcion" class="my-3">
@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
     data () {
         return {
@@ -78,6 +79,9 @@ export default {
       }
     },
     computed: {
+        ...mapGetters({
+            urlBase: 'getUrlBase',
+        }),
         usuario () {
             let user = this.$store.getters.getUsuario
             return user
@@ -87,7 +91,7 @@ export default {
           if (aux.idUsuario) {
             this.descripcion = aux.descripcion
             this.nickname = aux.nickname
-            this.imagen = 'http://localhost/QChao/media/usuarios/' + aux.idUsuario + '.jpg'
+            this.imagen = this.urlBase + 'media/usuarios/' + aux.idUsuario + '.jpg'
           }
           return this.$store.getters.getOtroPerfil
         }

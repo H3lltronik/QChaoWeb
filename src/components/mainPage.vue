@@ -9,7 +9,6 @@
                             <left-aside></left-aside>
                         </b-col>
                         <b-col md="6" >
-                            <a :href="url">{{url}}</a>
                             <nuevo-shitpost v-if="hayUsuario"/>
                             <shitpost-base :publicaciones="publicaciones"></shitpost-base>
                             <event-base :eventos="eventos"></event-base>
@@ -29,7 +28,6 @@
 export default {
     data () {
         return {
-            url: "https://homuapp.000webhostapp.com/Imagenes/15-1-2019-2-20-45.jpg",
         }
     },
     created () {

@@ -45,19 +45,21 @@ export default({
     },
     actions: {
         loadShitpost ({commit, getters}) {
-            axios.post('http://localhost/QChao/conexiones/contenido/shitpost/getAllShitpost.php').then(response => {
+            let urlBase = getters.getUrlBase
+            axios.post(urlBase + 'conexiones/contenido/shitpost/getAllShitpost.php').then(response => {
                 let contenidos = response.data.contenido
-                contenidos.urlBase = getters.urlBase
+                contenidos.urlBase = getters.getUrlBase
                 console.log("Contenidos", contenidos)
                 commit('setPublicaciones', contenidos)
             })
         },
         comentar ({commit}, comentario) {
+            let urlBase = getters.getUrlBase
             let formData = new FormData ()
             formData.set('idUsuario', comentario.idUsuario)
             formData.set('idShitpost', comentario.idShitpost)
             formData.set('comentario', comentario.comentario)
-            axios.post('http://localhost/Qchao/conexiones/contenido/shitpost/comentar.php', formData).then(response => {
+            axios.post(urlBase + 'conexiones/contenido/shitpost/comentar.php', formData).then(response => {
                 if (response.data.status == 'OK') {
                     alert ('Comentario añadido')
                         commit('setComentario', comentario)
@@ -68,12 +70,13 @@ export default({
 
             })
         },
-        indicarLike ({commit}, publicacion) {
+        indicarLike ({commit, getters}, publicacion) {
+            let urlBase = getters.getUrlBase
             let formData = new FormData ()
             formData.set('idUsuario', publicacion.idUsuario)
             formData.set('idShitpost', publicacion.idShitpost)
 
-            axios.post('http://localhost/Qchao/conexiones/contenido/shitpost/meGusta.php', formData).then(response => {
+            axios.post(urlBase + 'conexiones/contenido/shitpost/meGusta.php', formData).then(response => {
                 let data = response.data
                 if (data.status.includes('OK')) {
                     if (data.add) {
@@ -88,13 +91,14 @@ export default({
 
             })
         },
-        publicarShitpost ({commit}, publicacion) {
+        publicarShitpost ({commit, getters}, publicacion) {
+            let urlBase = getters.getUrlBase
             let formData = new FormData();
             formData.append('idUsuario', publicacion.idUsuario);
             formData.append('descripcion', publicacion.descripcion);
             formData.append('tags', JSON.stringify(publicacion.tags));
             formData.append('file', publicacion.file);
-            axios.post('http://localhost/Qchao/conexiones/contenido/shitpost/nuevoShitpost.php',
+            axios.post(urlBase + 'conexiones/contenido/shitpost/asdasdadsdasdasd.php',
                 formData,{
                     headers: {
                         'Content-Type': 'multipart/form-data'
@@ -108,11 +112,11 @@ export default({
                     fecha: data.fecha,
                     idShitpost: data.idShitpost,
                     idUsuario: publicacion.idUsuario,
-                    imagen: 'http://localhost/QChao/media/shitpost/' + data.fichero,
+                    imagen: urlBase + 'media/shitpost/' + data.fichero,
                     tags: publicacion.tags,
                     likes: 0,
                     nombre: publicacion.nombreUsuario,
-                    perfilImagen: 'http://192.168.0.85/QChao/media/usuarios/' + publicacion.idUsuario + '.jpg',
+                    perfilImagen: urlBase + 'media/usuarios/' + publicacion.idUsuario + '.jpg',
                     tipo: data.tipo,
                 }
                 commit('addPublicacion', newPublicacion)

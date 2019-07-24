@@ -86,7 +86,8 @@ export default {
     },
     methods: {
         imgGen (idUsuario) {
-            return "http://localhost/Qchao/media/usuarios/" + idUsuario + ".jpg"
+            let urlBase = this.$store.getters.getUrlBase
+            return urlBase + "media/usuarios/" + idUsuario + ".jpg"
         },
         enviarMensaje () {
             

@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export default({
     state: {
-        urlBase: 'http://localhost/QChao/',
+        urlBase: 'http://192.168.0.26/QChao/',
         loading: false,
         tags: [],
     },
@@ -16,9 +16,10 @@ export default({
         }
     },
     actions: {
-        async loadTags ({commit}) {
+        async loadTags ({commit, getters}) {
+            let urlBase = getters.getUrlBase
             let tags = []
-            await axios.post("http://localhost/Qchao/conexiones/contenido/getAllTags.php").then(response => {
+            await axios.post(urlBase + "conexiones/contenido/getAllTags.php").then(response => {
                 let data = response.data
                 if (data.status.includes('OK')) {
                     tags = data.tags
@@ -37,11 +38,11 @@ export default({
             return tags
         },
         async buscar ({commit, getters}, tags) {
-            let urlBase = getters.urlBase
+            let urlBase = getters.getUrlBase
             let formData = new FormData ()
             let busqueda = {}
             formData.set('tags', JSON.stringify(tags))
-            await axios.post("http://localhost/Qchao/conexiones/contenido/buscar.php", formData).then(response => {
+            await axios.post(urlBase + "conexiones/contenido/buscar.php", formData).then(response => {
                 console.log("Debug", response.data)
                 let data = response.data
                 if (data.status.includes('OK')) {
@@ -66,7 +67,7 @@ export default({
         getLoading (state) {
             return state.loading
         },
-        urlBase (state) {
+        getUrlBase (state) {
             return state.urlBase
         },
         getTags (state) {

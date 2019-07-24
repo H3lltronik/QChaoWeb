@@ -4,7 +4,10 @@
             <b-container class="noPadding">
                 <b-row class="noPadding">
                     <b-col md="12" class="noPadding">
-                        <b-row class="noPadding">
+                        <b-row class="noPadding" v-if="evento.idUsuario == usuario.idUsuario">
+                            <b-button size="sm" variant="primary"  @click="editar(evento)" v-if="hayUsuario">
+                                Editar
+                            </b-button>
                         </b-row>
                     </b-col>
                     <b-col md="12" style="overflow: hidden; height: 300px;" class="noPadding">
@@ -132,7 +135,8 @@ export default {
                 return false
         },
         getImageUrl (evento, imgIndex) {
-            return 'http://localhost/QChao/media/eventos/' + evento.idEvento + '/' + (imgIndex-1) + '.jpg';
+            let urlBase = this.$store.getters.getUrlBase
+            return urlBase + 'media/eventos/' + evento.idEvento + '/' + (imgIndex-1) + '.jpg';
         },
         calificacion (evento) {
             let total = 0;
@@ -180,6 +184,10 @@ export default {
                 this.$store.dispatch('generarReporte', payload)
             }
             // console.log("publicacion", publicacion)
+        },
+        editar (publicacion) {
+            this.$router.push('editarEvento/')
+            this.$store.commit('setEditarEvento', publicacion)
         }
     }
 }

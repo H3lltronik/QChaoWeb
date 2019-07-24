@@ -9,7 +9,7 @@
                             <b-list-group >
                                 <b-list-group-item button @click="configTab = 0" style="height: 8rem;">General</b-list-group-item>
                                 <b-list-group-item button @click="configTab = 1" style="height: 8rem;">Seguridad</b-list-group-item>
-                                <b-list-group-item button @click="configTab = 2" style="height: 8rem;">Anuncios</b-list-group-item>
+                                <!-- <b-list-group-item button @click="configTab = 2" style="height: 8rem;">Anuncios</b-list-group-item> -->
                                 <b-list-group-item button @click="configTab = 3" style="height: 8rem;">Personalizacion</b-list-group-item>
                             </b-list-group>
                         </b-col>

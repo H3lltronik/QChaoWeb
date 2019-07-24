@@ -32,6 +32,7 @@ export default({
     },
     actions: {
         async loadSesiones ({commit, getters}) {
+          let urlBase = getters.getUrlBase
           let user = getters.getUsuario
           let formData = new FormData()
 
@@ -40,7 +41,7 @@ export default({
           }
 
           formData.set('idUsuario', user.idUsuario)
-          await axios.post('http://localhost/QChao/conexiones/usuario/getSesiones.php', formData).then(response => {
+          await axios.post(urlBase + 'conexiones/usuario/getSesiones.php', formData).then(response => {
             let data = response.data
             console.log("loadSesiones", user, data)
             if (data.status.includes('OK')) {
@@ -52,14 +53,16 @@ export default({
           })
         },
         cerrarSesion ({commit, getters}, sesion) {
+          let urlBase = getters.getUrlBase
           let formData = new FormData()
           formData.set('sesionToken', sesion.sesionToken)
-          axios.post('http://localhost/Qchao/conexiones/usuario/cerrarSesiones.php', formData).then(res => {
+          axios.post(urlBase + 'conexiones/usuario/cerrarSesiones.php', formData).then(res => {
               alert('Se han cerrado las sesiones')
               commit ('quitarSesion', sesion)
           })
         },
         loginUser ({commit, getters, dispatch}, loginAccount) {
+          let urlBase = getters.getUrlBase
             let formData = new FormData()
             let token = getters.generateToken
             let result = browser();
@@ -70,7 +73,7 @@ export default({
             formData.set('token', token)
             formData.set('browser', JSON.stringify(result))
 
-            axios.post('http://localhost/QChao/conexiones/usuario/login.php', formData).then(response => {
+            axios.post(urlBase + 'conexiones/usuario/login.php', formData).then(response => {
                 console.log(response.data)
                 if (response.data.status == 'OK') {
                     let usuario = response.data.user
@@ -98,11 +101,12 @@ export default({
             })
         },
         autoLogin ({commit, dispatch, getters}, token) {
+          let urlBase = getters.getUrlBase
           console.log('Autologin')
           let formData = new FormData()
           formData.set('token', token)
 
-          axios.post('http://localhost/Qchao/conexiones/usuario/loginByToken.php', formData).then(response => {
+          axios.post(urlBase + 'conexiones/usuario/loginByToken.php', formData).then(response => {
             let data = response.data
             if (data.status.includes('OK')) {
               data.user.token = token
@@ -120,12 +124,13 @@ export default({
 
         },
         logout ({commit, getters}) {
+          let urlBase = getters.getUrlBase
           let token = getters.getUsuario.token
           let formData = new FormData()
           formData.set('token', token)
           alert("token: " + token);
 
-          axios.post('http://localhost/Qchao/conexiones/usuario/logout.php', formData).then(response => {
+          axios.post(urlBase + 'conexiones/usuario/logout.php', formData).then(response => {
             console.log("Debug cerar sesion", response.data, getters.getUsuario)
             if (response.data.status.includes('OK')) {
               alert("Sesion cerrada")
@@ -140,12 +145,13 @@ export default({
             console.log("Logout catch: ", error)
           })
         },
-        getPerfil ({commit}, idPerfil) {
+        getPerfil ({commit, getters}, idPerfil) {
+          let urlBase = getters.getUrlBase
           let formData = new FormData()
           formData.set('idUsuario', idPerfil)
-          axios.post('http://localhost/QChao/conexiones/usuario/getUserProfile.php', formData).then(response => {
+          axios.post(urlBase + 'conexiones/usuario/getUserProfile.php', formData).then(response => {
             if (response.data.status.includes('OK')) {
-              response.data.usuario.imagen = 'http://localhost/QChao/media/usuarios/' + idPerfil + '.jpg'
+              response.data.usuario.imagen = urlBase + 'media/usuarios/' + idPerfil + '.jpg'
               commit('setOtroPerfil', response.data.usuario)
             } else {
               alert("Error")
@@ -154,7 +160,8 @@ export default({
             console.log(error)
           })
         },
-        personalizarPerfil ({commit}, newData) {
+        personalizarPerfil ({commit, getters}, newData) {
+          let urlBase = getters.getUrlBase
           let formData = new FormData ()
 
           if (newData.idUsuario)
@@ -166,7 +173,7 @@ export default({
           if (newData.nickname)
             formData.append('nickname', newData.nickname)
 
-            axios.post('http://localhost/QChao/conexiones/usuario/personalizar.php',
+            axios.post(urlBase + 'conexiones/usuario/personalizar.php',
           formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
             console.log("Response", response.data.response)
             if (response.data.status.includes('OK')) {

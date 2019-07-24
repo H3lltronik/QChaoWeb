@@ -18,8 +18,9 @@ export default({
       }
   },
   actions: {
-      loadReportes ({commit}) {
-          axios.post('http://localhost/Qchao/conexiones/administracion/reportes/getAllReportes.php').then(response => {
+      loadReportes ({commit, getters}) {
+          let urlBase = getters.getUrlBase
+          axios.post(urlBase + 'conexiones/administracion/reportes/getAllReportes.php').then(response => {
               let data = response.data
               if (data.status.includes('OK')) {
                   commit('setReportes', data.reportes)
@@ -30,13 +31,14 @@ export default({
               console.log("Error al generar reporte", error)
           })
       },
-      generarReporte ({commit}, payload) {
+      generarReporte ({commit, getters}, payload) {
+          let urlBase = getters.getUrlBase
           let formData = new FormData ()
           formData.set('mensaje', payload.mensaje)
           formData.set('contenido', JSON.stringify(payload.contenido))
           formData.set('idUsuario', payload.idUsuario)
           formData.set('tipo', payload.tipo)
-          axios.post('http://localhost/Qchao/conexiones/administracion/reportes/generarReporte.php', formData).then(response => {
+          axios.post(urlBase + 'conexiones/administracion/reportes/generarReporte.php', formData).then(response => {
               let data = response.data
               if (data.status.includes('OK')) {
                   alert('Se ha generado el reporte')
@@ -57,14 +59,30 @@ export default({
               console.log("Error al generar reporte", error)
           })
       },
-      borrarReporte ({commit}, idReporte) {
+      borrarReporte ({commit, getters}, idReporte) {
+          let urlBase = getters.getUrlBase
           let formData = new FormData ()
           formData.set('idReporte', idReporte)
-          axios.post('http://localhost/Qchao/conexiones/administracion/reportes/borrarReporte.php', formData).then(response => {
+          axios.post(urlBase + 'conexiones/administracion/reportes/borrarReporte.php', formData).then(response => {
               let data = response.data
               if (data.status.includes('OK')) {
                 //   alert('Se ha eliminado el reporte')
                   commit('quitarReporte', idReporte)
+
+                  // Obtenemos de firebase la id de la notificacion de esta solicidtus de reporte para borrarla
+                  firebase.database().ref('notificacionesAdmin/').orderByChild("idReporte").equalTo(idReporte).once('value', snapshot => {
+                      let returnArr = []; // Array para obtener el resultado de firebase aunque sea solo un elemento
+                      snapshot.forEach(childSnapshot => {
+                          let item = childSnapshot.val();
+                          item.key = childSnapshot.key;
+                          returnArr.push(item);
+                      });
+                      if (returnArr[0].idNotificacion != null)
+                      // Esto es para poder borrar la notificacion de la confirmacion
+                      firebase.database().ref('notificacionesAdmin/' + returnArr[0].idNotificacion).remove().then(res => {
+                      })
+                  })
+
               } else {
                   alert('Error al eliminar el reporte')
               }

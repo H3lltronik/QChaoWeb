@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
     data () {
         return {
@@ -54,7 +55,7 @@ export default {
         formData.set('correo', this.cuenta.correo)
         formData.set('password', this.cuenta.password)
         formData.set('telefono', this.cuenta.telefono)
-        this.axios.post('http://localhost/QChao/conexiones/usuario/saveGeneralConf.php', formData).then(response => {
+        this.axios.post(this.urlBase + 'conexiones/usuario/saveGeneralConf.php', formData).then(response => {
           if (response.data.status.includes('OK')) {
             alert("Se ha actualizado la informacion")
           } else {
@@ -66,6 +67,9 @@ export default {
       }
     },
     computed: {
+      ...mapGetters({
+            urlBase: 'getUrlBase',
+        }),
         usuario () {
             let user = this.$store.getters.getUsuario
             if (user.idUsuario) {
