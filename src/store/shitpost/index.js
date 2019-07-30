@@ -53,7 +53,7 @@ export default({
                 commit('setPublicaciones', contenidos)
             })
         },
-        comentar ({commit}, comentario) {
+        comentar ({commit, getters}, comentario) {
             let urlBase = getters.getUrlBase
             let formData = new FormData ()
             formData.set('idUsuario', comentario.idUsuario)
@@ -65,7 +65,7 @@ export default({
                         commit('setComentario', comentario)
                 }
                 else 
-                    alert (response.data.response)
+                    alert (response.data)
             }).catch(error => {
 
             })
@@ -98,7 +98,7 @@ export default({
             formData.append('descripcion', publicacion.descripcion);
             formData.append('tags', JSON.stringify(publicacion.tags));
             formData.append('file', publicacion.file);
-            axios.post(urlBase + 'conexiones/contenido/shitpost/asdasdadsdasdasd.php',
+            axios.post(urlBase + 'conexiones/contenido/shitpost/nuevoShitpost.php',
                 formData,{
                     headers: {
                         'Content-Type': 'multipart/form-data'

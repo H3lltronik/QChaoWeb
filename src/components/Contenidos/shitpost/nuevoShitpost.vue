@@ -41,9 +41,6 @@
                     </b-col>
                 </b-row>
                 Seleccionado: {{file? file.name:''}}
-
-                <img size="500" src="http://localhost/Qchao/conexiones/contenido/shitpost/xd.jpg"/>
-
             </b-col>
         </b-row>
     </b-card>
