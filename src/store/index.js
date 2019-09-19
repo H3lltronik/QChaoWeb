@@ -13,6 +13,7 @@ import Confirmaciones from './confirmaciones'
 import Notificaciones from './notificaciones'
 import Reportes from './reportes'
 import Bloqueos from './bloqueos'
+import Foro from './foro'
 
 Vue.use(Vuex)
 
@@ -28,5 +29,6 @@ export const store = new Vuex.Store({
         reportes: Reportes,
         bloqueos: Bloqueos,
         notificaciones: Notificaciones,
+        foro: Foro,
     }
 })

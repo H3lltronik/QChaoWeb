@@ -64,7 +64,7 @@ export default {
         },
         hayUsuario () {
             let user = this.$store.getters.getUsuario
-            if (user)
+            if (user.idUsuario)
                 return true
             else
                 return false

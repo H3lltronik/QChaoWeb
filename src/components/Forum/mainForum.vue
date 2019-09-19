@@ -3,56 +3,82 @@
         <navbar-component></navbar-component>
         <b-container fluid class="mt-5">
             <!-- b-row de la tabla -->
-            <b-row v-for="(innerAux, index) in 3" :key="index">
-                <b-col sm="10" class="mt-4 text-left">
+            <b-row>
+                <div class="col-12 mt-4 ">
+                    <create-thread-component v-if="hayUsuario"></create-thread-component>
+                </div>
+                <b-col sm="10" class="mt-2 text-left">
                     <h2 class="h4">Categoria del foro</h2>
                 </b-col>
                 <b-col sm="12">
-                    <table class="table table-striped table-bordered table-responsive">
-                        <thead class="thead-light text-left">
+                    <table class="table table-striped table-bordered table-responsive d-flex flex-wrap">
+                        <thead class="thead-light text-left w-100">
                             <tr class="row">
-                                <th class="col-8">Foro</th>
-                                <th class="col-1">Temas</th>
-                                <th class="col-1">Posts</th>
-                                <th class="col-2">Ultimo post</th>
+                                <th class="col-9">Tema</th>
+                                <th class="col-1">Urgente</th>
+                                <th class="col-2">Participantes</th>
                             </tr>
                         </thead>
-                        <tbody class="text-left">
-                            <tr class="row" v-for="(innerAux, index) in 5" :key="index">
-                                <td class="col-8">
-                                    <h3 class="h5"><a href="#0">Nombre del foro</a></h3>
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid eveniet aut dignissimos voluptas quae accusamus quisquam, voluptatibus consectetur ea earum. Eos dolorum, repellat porro quis quia itaque. Maxime, aperiam assumenda.</p>
+                        <tbody class="text-left w-100">
+                            <tr class="row" v-for="(post, index) in posts" :key="index">
+                                <td class="col-9 w-100">
+                                    <p>{{post.tema}}</p>
+                                    <div class="row d-flex justify-content-between align-items-center">
+                                      <span class="text-muted" style="font-size: 9pt;">Por <a href="#" @click.prevent="goToRouter('perfil/' + post.idUsuario)">{{post.nickname}}</a></span>
+                                      <button class="btn btn-sm btn-primary sm" @click="goToRouter('discusion/' + post.idPost)">Ver</button>
+                                    </div>
                                 </td>
-                                <td class="col-1">
-                                    <div>5</div>
+                                <td class="col-1 d-flex">
+                                    <div class="m-auto" v-if="post.urgente == 1">
+                                      <check-icon></check-icon>
+                                    </div>
                                 </td>
-                                <td class="col-1">
-                                    <div>18</div>
-                                </td>
-                                <td class="col-2">
-                                    <h4 class="h6"><a href="#">Nombre del post</a></h4>
-                                    <div>Por: <a href="#0">Nombre del autor</a></div>
-                                    <div>24 Febrero 2017 20:07</div>
+                                <td class="col-2 d-flex">
+                                    <div class="m-auto">{{post.participantes}}</div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </b-col>
             </b-row>
-        </b-container> 
+        </b-container>
     </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
     data () {
         return {
-            
+
         }
-    }
+    },
+    created () {
+      this.$store.dispatch('cargarPosts')
+    },
+    methods: {
+      goToRouter (route) {
+        this.$router.push("/"+route)
+      },
+    },
+    computed: {
+      ...mapGetters({
+          posts: 'getPosts'
+      }),
+      hayUsuario () {
+          let user = this.$store.getters.getUsuario
+          if (user.idUsuario)
+              return true
+          else
+              return false
+      },
+  }
 }
 </script>
 
-<style>
-    
+<style scoped>
+  a {
+      text-decoration:none;
+   }
 </style>

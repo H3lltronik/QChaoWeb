@@ -22,6 +22,8 @@ import Information from 'vue-material-design-icons/Information.vue'
 import Computer from 'vue-material-design-icons/Laptop.vue'
 import Alert from 'vue-material-design-icons/Alert.vue'
 import ShieldCheck from 'vue-material-design-icons/ShieldCheck.vue'
+import Check from 'vue-material-design-icons/Check.vue'
+
 import moment from 'moment'
 
 // Custom components
@@ -39,6 +41,7 @@ import Comentar from './components/Contenidos/comentar.vue';
 import CrearShitpost from './components/Contenidos/shitpost/nuevoShitpost.vue';
 import ConfirmsComponent from './components/Administracion/confirmsComponent.vue';
 import PerfilComponent from './components/Perfil/perfil.vue';
+import CrearThread from './components/Forum/createThread.vue';
 
 // Reportes
 import ReporteComponent from './components/Administracion/reportes/reporte.vue';
@@ -81,6 +84,7 @@ Vue.component('taller-base', TallerBase);
 Vue.component('confirms-component', ConfirmsComponent);
 Vue.component('reporte-component', ReporteComponent);
 Vue.component('perfil-component', PerfilComponent);
+Vue.component('create-thread-component', CrearThread);
 
 //Iconos
 Vue.component('menu-icon', Settings);
@@ -99,6 +103,7 @@ Vue.component('information-icon', Information);
 Vue.component('computer-icon', Computer);
 Vue.component('alert-icon', Alert);
 Vue.component('shieldcheck-icon', ShieldCheck);
+Vue.component('check-icon', Check);
 
 Vue.prototype.moment = moment
 

@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export default({
     state: {
-        urlBase: 'http://192.168.0.26/QChao/',
+        urlBase: 'http://localhost/QChao/',
         loading: false,
         tags: [],
     },
@@ -31,7 +31,7 @@ export default({
 
                     commit('setTags', tags)
                 }
-                
+
             }).catch(error => {
                 console.log("Error al obtener los tags", error)
             })

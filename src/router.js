@@ -23,6 +23,7 @@ import EditarEvento from './components/Eventos/editarEvento.vue';
 import EditarTaller from './components/Contenidos/talleres/editarTaller.vue';
 import MisEventos from './components/Eventos/misEventos.vue';
 import Busqueda from './components/Contenidos/busqueda.vue';
+import MainThread from './components/Forum/mainThread.vue';
 
 Vue.use(Router);
 
@@ -44,6 +45,11 @@ export default new Router({
       path: '/forum',
       name: 'Foro',
       component: MainForum,
+    },
+    {
+      path: '/discusion/:idPost',
+      name: 'Discusion',
+      component: MainThread,
     },
     {
       path: '/events',
