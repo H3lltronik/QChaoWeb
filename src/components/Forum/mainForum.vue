@@ -24,7 +24,12 @@
                                 <td class="col-9 w-100">
                                     <p>{{post.tema}}</p>
                                     <div class="row d-flex justify-content-between align-items-center">
-                                      <span class="text-muted" style="font-size: 9pt;">Por <a href="#" @click.prevent="goToRouter('perfil/' + post.idUsuario)">{{post.nickname}}</a></span>
+                                      <div class="d-flex align-items-center">
+                                        <span class="text-muted" style="font-size: 9pt;">Por <a href="#" @click.prevent="goToRouter('perfil/' + post.idUsuario)">{{post.nickname}}</a></span>
+                                        <span @click="deletePost ()" v-if="post.idUsuario == usuario.idUsuario" style="cursor: pointer;">
+                                          <close-icon></close-icon>
+                                        </span>
+                                      </div>
                                       <button class="btn btn-sm btn-primary sm" @click="goToRouter('discusion/' + post.idPost)">Ver</button>
                                     </div>
                                 </td>
@@ -61,10 +66,18 @@ export default {
       goToRouter (route) {
         this.$router.push("/"+route)
       },
+      deletePost () {
+        let confirmacion = confirm('De verdad deseas borrar este post?');
+        if (confirmacion) {
+
+        }
+        // this.$store.dispatch('deletePost')
+      }
     },
     computed: {
       ...mapGetters({
-          posts: 'getPosts'
+          posts: 'getPosts',
+          usuario: 'getUsuario',
       }),
       hayUsuario () {
           let user = this.$store.getters.getUsuario

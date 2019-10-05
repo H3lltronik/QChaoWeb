@@ -23,6 +23,8 @@ import Computer from 'vue-material-design-icons/Laptop.vue'
 import Alert from 'vue-material-design-icons/Alert.vue'
 import ShieldCheck from 'vue-material-design-icons/ShieldCheck.vue'
 import Check from 'vue-material-design-icons/Check.vue'
+import Close from 'vue-material-design-icons/Close.vue'
+import Edit from 'vue-material-design-icons/Pencil.vue'
 
 import moment from 'moment'
 
@@ -104,6 +106,8 @@ Vue.component('computer-icon', Computer);
 Vue.component('alert-icon', Alert);
 Vue.component('shieldcheck-icon', ShieldCheck);
 Vue.component('check-icon', Check);
+Vue.component('close-icon', Close);
+Vue.component('edit-icon', Edit);
 
 Vue.prototype.moment = moment
 
