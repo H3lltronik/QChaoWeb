@@ -64,7 +64,7 @@ export default({
                     alert ('Comentario añadido')
                         commit('setComentario', comentario)
                 }
-                else 
+                else
                     alert (response.data)
             }).catch(error => {
 
@@ -98,6 +98,7 @@ export default({
             formData.append('descripcion', publicacion.descripcion);
             formData.append('tags', JSON.stringify(publicacion.tags));
             formData.append('file', publicacion.file);
+            console.log("File?", publicacion)
             axios.post(urlBase + 'conexiones/contenido/shitpost/nuevoShitpost.php',
                 formData,{
                     headers: {
@@ -122,6 +123,7 @@ export default({
                 commit('addPublicacion', newPublicacion)
                 console.log("Subido xd", response.data)
                 console.log("Nueva publicacion", newPublicacion, 'PARAMETRO', publicacion)
+                window.location.reload()
             }).catch(function(){
                 console.log('FAILURE!!');
             });

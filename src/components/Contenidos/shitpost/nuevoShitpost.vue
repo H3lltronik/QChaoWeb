@@ -7,7 +7,7 @@
             </b-col>
             <b-col md="12" class="mt-2">
                 <b-row>
-                    <b-col cols="6" >
+                    <div class="col-auto">
                         <!-- https://www.npmjs.com/package/vue-tags-component -->
                             <vue-tags class="mx-auto my-auto mt-3"
                                 style="z-index: 10;"
@@ -26,14 +26,14 @@
                                 @on-tag-list-opened="onTagListOpened"
                                 @on-tag-list-closed="onTagListClosed"
                                 @on-tag-created="onTagCreated"/>
-                    </b-col>
-                    <b-col cols="3" class="my-auto">
+                    </div>
+                    <div class="col-auto my-auto">
                         <b-button variant="primary" block @click="onPickFile" size="sm">Seleccionar</b-button>
                         <input type="file" ref="fileInput" style="display: none;" :accept="accept[type]+'/*'" @change="onFilePicked">
-                    </b-col>
-                    <b-col cols="3" class="my-auto">
+                    </div>
+                    <div class="col-auto my-auto">
                             <b-form-radio-group buttons v-model="type" :options="options" size="sm"/>
-                    </b-col>
+                    </div>
                 </b-row>
                 <b-row>
                     <b-col class="mt-2">
@@ -113,13 +113,13 @@ export default {
         },
         onTagCreated ($event) {
             console.log($event)
-        
+
             let aux = {...$event}
             aux.id = this.numeroRandom(1, 500)
             this.allTags.push(aux)
         },
         numeroRandom (min, max) {
-            return Math.floor(Math.random() * (+max - +min)) + +min; 
+            return Math.floor(Math.random() * (+max - +min)) + +min;
         }
     },
     computed: {

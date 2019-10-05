@@ -13,7 +13,7 @@ export default({
       state.eventos = eventos
     },
     actualizaCalificacion (state, newCal) {
-      
+
     },
     addAsistencia (state, currEvento) {
       let evento = state.eventos.find(auxFind => {
@@ -35,7 +35,7 @@ export default({
     }
   },
   actions: {
-    crearEvento ({commit}, payload) {
+    crearEvento ({commit, getters}, payload) {
       let urlBase = getters.getUrlBase
       let formData = new FormData ()
       let imagenes = payload.imagenes
@@ -52,11 +52,11 @@ export default({
         formData.append('imagen_'+i, imagenes[i])
       }
 
-      axios.post(urlBase + 'conexiones/contenido/eventos/crearEvento.php', formData, 
+      axios.post(urlBase + 'conexiones/contenido/eventos/crearEvento.php', formData,
       {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
         if (response.data.status.includes('OK')) {
           alert('SE HA CREADO EL EVENTO')
-        } else 
+        } else
           alert('HUBO UN ERROR AL CREAR EL EVENTO')
       }).catch(error => {
         console.log(error)
@@ -143,11 +143,11 @@ export default({
         formData.append('imagen_'+i, imagenes[i])
       }
 
-      axios.post(urlBase + 'conexiones/contenido/eventos/editarEvento.php', formData, 
+      axios.post(urlBase + 'conexiones/contenido/eventos/editarEvento.php', formData,
       {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
         if (response.data.status.includes('OK')) {
           alert('SE HA EDITADO EL EVENTO')
-        } else 
+        } else
           alert('HUBO UN ERROR AL CREAR EL EVENTO')
       }).catch(error => {
         console.log(error)
