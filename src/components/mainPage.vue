@@ -9,7 +9,7 @@
                             <left-aside></left-aside>
                         </b-col>
                         <b-col md="6" >
-                            <nuevo-shitpost v-if="hayUsuario"/>
+                            <nuevo-shitpost v-if="hayUsuario && !bloqueado"/>
                             <shitpost-base :publicaciones="publicaciones"></shitpost-base>
                             <event-base :eventos="eventos"></event-base>
                             <taller-base :talleres="talleres"></taller-base>
@@ -31,9 +31,9 @@ export default {
         }
     },
     created () {
-        this.$store.dispatch('cargarEventos')
-        this.$store.dispatch('cargarTalleres')
-        this.$store.dispatch('loadShitpost')
+        this.$store.dispatch('cargarLastEventos')
+        this.$store.dispatch('cargarLastTalleres')
+        this.$store.dispatch('loadLastShitpost')
     },
     computed: {
         publicaciones () {
@@ -69,6 +69,10 @@ export default {
             else
                 return false
         },
+        bloqueado () {
+          let bloqueoTimestamp = localStorage.getItem("bloqueoTimestamp")
+          return (bloqueoTimestamp !== null)
+        }
     }
 }
 </script>

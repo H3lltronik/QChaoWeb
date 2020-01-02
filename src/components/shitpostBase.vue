@@ -36,7 +36,7 @@
                                         <b-row class="d-flex">
                                             <div class="my-auto">
                                                 <b-row>
-                                                    Tags: 
+                                                    Tags:
                                                     <div v-if="publicacion.tags.length > 0">
                                                         <b-badge class="mr-1" v-for="(tag, index) in publicacion.tags" :key="index">
                                                             {{tag.name}}
@@ -69,7 +69,7 @@
                                                 <small class="ml-2">{{publicacion.comentarios.length}}</small>
                                             </div>
                                             <div class="mr-5 my-auto">
-                                                <b-button size="sm" variant="danger" class="mb-2" @click="reportar(publicacion)" v-if="hayUsuario">
+                                                <b-button size="sm" variant="danger" class="mb-2" @click="reportar(publicacion)" v-if="hayUsuario && !bloqueado">
                                                     Reportar
                                                 </b-button>
                                             </div>
@@ -78,7 +78,7 @@
                                     </b-col>
                                     <b-col md="12" class="mt-2 noPadding ">
 
-                                        <comentario-comentar :idUsuario="usuario.idUsuario" v-if="hayUsuario"
+                                        <comentario-comentar :idUsuario="usuario.idUsuario" v-if="hayUsuario && !bloqueado"
                                         :imagen="usuario.imagen" :idShitpost="publicacion.idShitpost"
                                         :nombre="usuario.Nombre"/>
 
@@ -128,6 +128,9 @@ export default {
     },
     methods: {
         meGusta (idShitpost) {
+          if (this.bloqueado) {
+            return;
+          }
             let publicacion = {
                 idUsuario: this.usuario.idUsuario,
                 idShitpost: idShitpost,
@@ -177,7 +180,11 @@ export default {
         usuario () {
             let user = this.$store.getters.getUsuario
             return user
-        }
+        },
+        bloqueado () {
+          let bloqueoTimestamp = localStorage.getItem("bloqueoTimestamp")
+          return (bloqueoTimestamp !== null)
+        },
     }
 }
 </script>

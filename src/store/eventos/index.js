@@ -56,6 +56,7 @@ export default({
       {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
         if (response.data.status.includes('OK')) {
           alert('SE HA CREADO EL EVENTO')
+          router.push('/')
         } else
           alert('HUBO UN ERROR AL CREAR EL EVENTO')
       }).catch(error => {
@@ -69,6 +70,33 @@ export default({
         if (response.data.status.includes('OK')) {
           console.log("Eventos", eventos)
           commit('setEventos', eventos)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    cargarLastEventos ({commit, getters}) {
+      let urlBase = getters.getUrlBase
+      axios.post(urlBase + 'conexiones/contenido/eventos/getLastsEventos.php').then(response => {
+        let eventos = response.data.eventos
+        if (response.data.status.includes('OK')) {
+          console.log("Eventos", eventos)
+          commit('setEventos', eventos)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    eliminarEvento ({commit, getters}, payload) {
+      let urlBase = getters.getUrlBase
+
+      let formData = new FormData ()
+      formData.set('idEvento', payload.idEvento)
+
+      axios.post(urlBase + 'conexiones/contenido/eventos/eliminarEvento.php', formData).then(response => {
+        if (response.data.status.includes('OK')) {
+          alert("Evento Eliminado")
+          window.location.reload()
         }
       }).catch(error => {
         console.log(error)

@@ -3,10 +3,17 @@
         <b-card class="mt-5 noPadding" v-for="(evento, index) in eventos" :key="index">
             <b-container class="noPadding">
                 <b-row class="noPadding">
-                    <b-col md="12" class="noPadding">
+                    <b-col md="auto" class="noPadding">
                         <b-row class="noPadding" v-if="evento.idUsuario == usuario.idUsuario">
-                            <b-button size="sm" variant="primary"  @click="editar(evento)" v-if="hayUsuario">
+                            <b-button size="sm" variant="primary"  @click="editar(evento)" v-if="hayUsuario && !bloqueado">
                                 Editar
+                            </b-button>
+                        </b-row>
+                    </b-col>
+                    <b-col md="auto" class="noPadding">
+                        <b-row class="noPadding" v-if="evento.idUsuario == usuario.idUsuario">
+                            <b-button size="sm" variant="danger"  @click="eliminarEvento(evento)" v-if="hayUsuario && !bloqueado">
+                                ELIMINAR
                             </b-button>
                         </b-row>
                     </b-col>
@@ -23,10 +30,10 @@
                         <b-card-text class="text-left">
                             <b-row >
                                 <h4 class="h4 my-auto">{{evento.titulo}}</h4>
-                                <b-button size="sm" variant="danger" class="ml-2" @click="reportar(evento)" v-if="hayUsuario">
+                                <b-button size="sm" variant="danger" class="ml-2" @click="reportar(evento)" v-if="hayUsuario && !bloqueado">
                                     Reportar
                                 </b-button>
-                                <b-button class="ml-auto" size="sm" :disabled="eventoPasado(evento)" v-if="hayUsuario"
+                                <b-button class="ml-auto" size="sm" :disabled="eventoPasado(evento)" v-if="hayUsuario && !bloqueado"
                                 variant="primary" @click="registrarAsistencia(evento)">
                                     ASISTIRE
                                 </b-button>
@@ -46,16 +53,16 @@
                             </b-row>
                             <b-row class="my-2" v-if="eventoPasado(evento)">
                                 <h6 class="text-muted my-auto">
-                                    <staroutline-icon/>{{calificacion(evento)}} de calificacion 
+                                    <staroutline-icon/>{{calificacion(evento)}} de calificacion
                                 </h6>
-                                <div class="text-muted my-auto mx-1" style="font-size: 8pt;"> 
+                                <div class="text-muted my-auto mx-1" style="font-size: 8pt;">
                                     ( de {{evento.calificaciones.length}} calificacion[es] )
                                 </div>
                             </b-row>
                             <b-row class="d-flex">
                                 <div class="my-auto">
                                     <b-row>
-                                        Tags: 
+                                        Tags:
                                         <div v-if="evento.tags.length > 0">
                                             <b-badge class="mr-1" v-for="(tag, index) in evento.tags" :key="index">
                                                 {{tag.name}}
@@ -81,7 +88,7 @@
                                 </b-col>
                             </b-row>
                             <hr class="my-3">
-                            <b-row v-if="eventoPasado(evento) && hayUsuario">
+                            <b-row v-if="eventoPasado(evento) && hayUsuario && !bloqueado">
                                 <h6 class="text-muted my-auto">¿Que te parecio el evento?</h6>
                                 <b-input-group prepend="0" append="5" class="my-2">
                                     <b-form-input type="range" min="0" max="5" v-model="calificar"/>
@@ -122,13 +129,17 @@ export default {
             else
                 return false
         },
+        bloqueado () {
+          let bloqueoTimestamp = localStorage.getItem("bloqueoTimestamp")
+          return (bloqueoTimestamp !== null)
+        }
     },
     methods: {
         eventoPasado (evento) {
             var date1 = new Date(evento.fecha);
             var date2 = new Date();
             var timeDiff = date1.getTime() - date2.getTime();
-            
+
             if (timeDiff < 0)
                 return true
             else
@@ -166,6 +177,12 @@ export default {
         },
         goToRouter (route) {
           this.$router.push("/"+route)
+        },
+        eliminarEvento (evento) {
+          let payload = {
+              idEvento: evento.idEvento,
+          }
+          this.$store.dispatch('eliminarEvento', payload)
         },
         reportar (publicacion) {
             let mensaje = ''

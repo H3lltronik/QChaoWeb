@@ -3,10 +3,17 @@
         <b-card class="mt-5 noPadding" v-for="(taller, index) in talleres" :key="index">
             <b-container class="noPadding">
                 <b-row class="noPadding w-100">
-                    <b-col md="12" class="noPadding">
+                    <b-col md="auto" class="noPadding">
                         <b-row class="noPadding" v-if="taller.idUsuario == usuario.idUsuario">
-                            <b-button size="sm" variant="primary"  @click="editar(taller)" v-if="hayUsuario">
+                            <b-button size="sm" variant="primary"  @click="editar(taller)" v-if="hayUsuario && !bloqueado">
                                 Editar
+                            </b-button>
+                        </b-row>
+                    </b-col>
+                    <b-col md="auto" class="noPadding">
+                        <b-row class="noPadding" v-if="taller.idUsuario == usuario.idUsuario">
+                            <b-button size="sm" variant="danger"  @click="eliminarTaller(taller)" v-if="hayUsuario && !bloqueado">
+                                ELIMINAR
                             </b-button>
                         </b-row>
                     </b-col>
@@ -24,12 +31,12 @@
                             <b-row >
                                 <!-- {{taller}} -->
                                 <h4 class="h4 my-auto">{{taller.Nombre}}</h4>
-                                <b-button variant="danger" size="sm" @click="reportar(taller)" class="ml-2" v-if="hayUsuario">
+                                <b-button variant="danger" size="sm" @click="reportar(taller)" class="ml-2" v-if="hayUsuario && !bloqueado">
                                     Reportar
                                 </b-button>
                                 <div class="ml-auto">
                                     <b-row v-if="taller.Verificado != 1">
-                                        <div v-if="taller.idUsuario == usuario.idUsuario" class="mr-2">
+                                        <div v-if="taller.idUsuario == usuario.idUsuario && !bloqueado" class="mr-2">
                                             <b-row class="">
                                                 <b-button variant="primary" size="sm" @click="goToRouter('verificarTaller/' + taller.idEstablecimiento)">
                                                     Solicitar verificacion
@@ -66,7 +73,7 @@
                             <b-row class="d-flex">
                                 <div class="my-auto">
                                     <b-row>
-                                        Tags: 
+                                        Tags:
                                         <div v-if="taller.tags != undefined">
                                             <b-badge class="mr-1" v-for="(tag, index) in taller.tags" :key="index">
                                                 {{tag.name}}
@@ -78,6 +85,14 @@
                                     </b-row>
                                 </div>
                             </b-row>
+
+                            <h6 class="text-muted my-auto">
+                                  <staroutline-icon/>{{calificacion(taller)}} de calificacion
+                              </h6>
+                              <div class="text-muted my-auto mx-1" style="font-size: 8pt;">
+                                  ( de {{taller.calificaciones.length}} calificacion[es] )
+                              </div>
+
                             <hr class="my-3">
                             <b-row class="text-center">
                                 <b-col md="12" class="mt-2">
@@ -85,6 +100,16 @@
                                     :disabled="true" type="text" :value="taller.Descripcion"/>
                                 </b-col>
                             </b-row>
+
+                            <div class="row" v-if="hayUsuario && usuario.idUsuario != taller.idUsuario && !bloqueado">
+                              <h6 class="text-muted my-auto">¿Que te parece este taller?</h6>
+                              <b-input-group prepend="0" append="5" class="my-2">
+                                  <b-form-input type="range" min="0" max="5" v-model="calificar"/>
+                              </b-input-group>
+                              <b-button class="ml-auto" size="sm" block @click="calificarTaller(taller)">
+                                  Calificar
+                              </b-button>
+                            </div>
                         </b-card-text>
                     </b-col>
                 </b-row>
@@ -102,6 +127,7 @@ export default {
     },
     data () {
         return {
+          calificar: '',
         }
     },
     created () {
@@ -124,8 +150,31 @@ export default {
             else
                 return false
         },
+        bloqueado () {
+          let bloqueoTimestamp = localStorage.getItem("bloqueoTimestamp")
+          return (bloqueoTimestamp !== null)
+        }
     },
     methods: {
+      calificacion (taller) {
+          let total = 0;
+          if (taller.calificaciones.length > 0) {
+              taller.calificaciones.forEach(cal => {
+                  total += Number(cal.Calificacion)
+              });
+              return (total / taller.calificaciones.length)
+          } else {
+              return 0;
+          }
+        },
+        calificarTaller (taller) {
+          let payload = {
+              idEstablecimiento: taller.idEstablecimiento,
+              idUsuario: this.usuario.idUsuario,
+              calificacion: this.calificar,
+          }
+          this.$store.dispatch('calificarTaller', payload)
+        },
         getImageUrl (taller, imgIndex) {
             let urlBase = this.$store.getters.getUrlBase
             return urlBase + 'media/establecimientos/' + taller.idEstablecimiento + '/' + (imgIndex-1) + '.jpg';
@@ -154,7 +203,13 @@ export default {
                 this.$store.dispatch('generarReporte', payload)
             }
             // console.log("publicacion", publicacion)
-        }
+        },
+        eliminarTaller (taller) {
+          let payload = {
+              idEstablecimiento: taller.idEstablecimiento,
+          }
+          this.$store.dispatch('eliminarTaller', payload)
+        },
     }
 }
 </script>

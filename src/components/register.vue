@@ -18,11 +18,11 @@
                 <!-- Step 1 -->
                 <div v-if="step1" class="mt-2">
                     <b-input-group size="md" prepend="Username" class="mb-3">
-                        <b-form-input v-model="newAccount.username"/>
+                        <b-form-input v-model="newAccount.username" :maxLength="30"/>
                     </b-input-group>
 
                     <b-input-group size="md" prepend="Password" class="mb-3">
-                        <b-form-input v-model="newAccount.password" type="password"/>
+                        <b-form-input v-model="newAccount.password" type="password" :maxLength="40"/>
                     </b-input-group>
 
                     <b-input-group size="md" prepend="Email" class="mb-3">
@@ -30,7 +30,7 @@
                     </b-input-group>
 
                     <b-input-group size="md" prepend="Nickname" class="mb-3" >
-                        <b-form-input v-model="newAccount.nickname"/>
+                        <b-form-input v-model="newAccount.nickname" :maxLength="30"/>
 
                         <b-dropdown text="City" class="mx-5" v-model="newAccount.city">
                             <b-dropdown-item v-for="(aux, index) in citys" :key="index" @click="selectCity (aux)">
@@ -66,11 +66,11 @@
                 <b-card v-if="login" border-variant="dark" bg-variant="dark" header="Login"
                 text-variant="white" class="text-center" header-border-variant="secondary">
                     <b-input-group size="md" prepend="Username" class="mb-3">
-                        <b-form-input v-model="loginAccount.username"/>
+                        <b-form-input v-model="loginAccount.username" :maxLength="30"/>
                     </b-input-group>
 
                     <b-input-group size="md" prepend="Password" class="mb-3">
-                        <b-form-input v-model="loginAccount.password" type="password"/>
+                        <b-form-input v-model="loginAccount.password" type="password" :maxLength="40"/>
                     </b-input-group>
 
                     <b-button variant="success" block @click="loginMethod" :disabled="!loginAuth">
@@ -111,7 +111,7 @@ export default {
             loginAccount: {
                 username: '',
                 password: '',
-            }
+            },
         }
     },
     methods: {
@@ -143,6 +143,10 @@ export default {
             this.newAccount.city = city
         },
         registerUser () {
+          // Username length
+          if (newAccount.username.length > 30) { alert ("El tamaño maximo para el nickname son 30 caracteres"); }
+          if (newAccount.password.length > 40) { alert ("El tamaño maximo para la contraseña son 40 caracteres"); }
+
             let urlBase = this.$store.getters.getUrlBase
             let newAccount = this.newAccount
             let type = 0;

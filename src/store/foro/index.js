@@ -65,9 +65,10 @@ export default({
       let urlBase = getters.getUrlBase
 
       let formData = new FormData ()
-      formData.set('idUsuario', payload.idUsuario)
-      formData.set('tema', payload.tema)
-      formData.set('urgente', payload.urgente)
+      formData.append('idUsuario', payload.idUsuario)
+      formData.append('tema', payload.tema)
+      formData.append('tags', JSON.stringify(payload.tags));
+      formData.append('urgente', payload.urgente)
 
       axios.post(urlBase + 'conexiones/contenido/foros/crearPost.php', formData).then(response => {
         if (response.data.status.includes('OK')) {

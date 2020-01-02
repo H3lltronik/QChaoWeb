@@ -10,15 +10,25 @@
                 <div class="row justify-content-center">
                   <span>Tema</span>
                   <div class="ml-3" v-if="post.idUsuario == usuario.idUsuario" style="cursor: pointer;">
-                    <edit-icon @click="editandoPost (true)"></edit-icon>
+                    <edit-icon @click="editandoPost (true)" v-if="!bloqueado && hayUsuario"></edit-icon>
                   </div>
                 </div>
               </div>
               <div class="card-body">
                 <div v-if="!editarPost">{{post.tema}}</div>
+                <div class="mt-2 row justify-content-center">Tags:
+                  <div v-if="post.tags.length > 0">
+                      <b-badge class="mr-1" v-for="(tag, index) in post.tags" :key="index">
+                          {{tag.name}}
+                      </b-badge>
+                  </div>
+                  <div v-else>
+                      Sin tags
+                  </div>
+                </div>
                 <div v-show="hayUsuario && editarPost">
-                  <close-icon @click="editandoPost (false)" style="cursor: pointer;"></close-icon>
-                  <create-thread-component :editar="postAEditar"></create-thread-component>
+                  <close-icon @click="editandoPost (false)" style="cursor: pointer;" v-if="!bloqueado && hayUsuario"></close-icon>
+                  <create-thread-component :editar="postAEditar" v-if="!bloqueado && hayUsuario"></create-thread-component>
                 </div>
               </div>
             </div>
@@ -40,8 +50,8 @@
                                 <div class="d-flex align-items-center">
                                   <span class="text-muted" style="font-size: 9pt;">Por: <a href="#" @click.prevent="goToRouter('perfil/' + hilo.idUsuario)">{{hilo.nickname}}</a></span>
                                   <span v-if="hilo.idUsuario == usuario.idUsuario" style="cursor: pointer;">
-                                    <close-icon @click="deleteHilo (hilo.idHilo)"></close-icon>
-                                    <edit-icon @click="editandoHilo (hilo)"></edit-icon>
+                                    <close-icon @click="deleteHilo (hilo.idHilo)" v-if="!bloqueado && hayUsuario"></close-icon>
+                                    <edit-icon @click="editandoHilo (hilo)" v-if="!bloqueado && hayUsuario"></edit-icon>
                                   </span>
                                 </div>
                               </div>
@@ -58,7 +68,7 @@
           </div>
 
           <div class="col-12 mt-4">
-            <CrearComentario :editar="editarHilo" v-on:cancelEdit="editarHilo = null"></CrearComentario>
+            <CrearComentario :editar="editarHilo" v-on:cancelEdit="editarHilo = null" v-if="!bloqueado && hayUsuario"></CrearComentario>
           </div>
 
         </b-row>
@@ -116,6 +126,10 @@ export default {
         post: 'getPost',
         usuario: 'getUsuario',
       }),
+      bloqueado () {
+        let bloqueoTimestamp = localStorage.getItem("bloqueoTimestamp")
+        return (bloqueoTimestamp !== null)
+      }
   }
 }
 </script>

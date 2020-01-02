@@ -53,6 +53,15 @@ export default({
                 commit('setPublicaciones', contenidos)
             })
         },
+        loadLastShitpost ({commit, getters}) {
+            let urlBase = getters.getUrlBase
+            axios.post(urlBase + 'conexiones/contenido/shitpost/getLastsShitposts.php').then(response => {
+                let contenidos = response.data.contenido
+                contenidos.urlBase = getters.getUrlBase
+                console.log("Contenidos", contenidos)
+                commit('setPublicaciones', contenidos)
+            })
+        },
         comentar ({commit, getters}, comentario) {
             let urlBase = getters.getUrlBase
             let formData = new FormData ()

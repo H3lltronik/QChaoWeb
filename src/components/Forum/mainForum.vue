@@ -5,7 +5,7 @@
             <!-- b-row de la tabla -->
             <b-row>
                 <div class="col-12 mt-4 ">
-                    <create-thread-component v-if="hayUsuario"></create-thread-component>
+                    <create-thread-component v-if="hayUsuario && !bloqueado"></create-thread-component>
                 </div>
                 <b-col sm="10" class="mt-2 text-left">
                     <h2 class="h4">Categoria del foro</h2>
@@ -86,6 +86,10 @@ export default {
           else
               return false
       },
+      bloqueado () {
+        let bloqueoTimestamp = localStorage.getItem("bloqueoTimestamp")
+        return (bloqueoTimestamp !== null)
+      }
   }
 }
 </script>

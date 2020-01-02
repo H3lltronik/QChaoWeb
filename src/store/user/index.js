@@ -11,6 +11,8 @@ export default({
         user: {},
         sesiones: [],
         otroPerfil: {},
+        intentos: 0,
+        horaDesbloqueo: null
     },
     mutations: {
         setUsuario (state, payload) {
@@ -28,6 +30,15 @@ export default({
         quitarSesion (state, payload) {
           let index = state.sesiones.map(function(e) { return e.idSesion; }).indexOf(payload.idSesion);
           state.sesiones.splice(index, 1)
+        },
+        addIntento (state) {
+          state.intentos++
+        },
+        setHoraDesbloqueo (state, payload) {
+          state.horaDesbloqueo = payload
+        },
+        setIntentos (state, payload) {
+          state.intentos = payload
         }
     },
     actions: {
@@ -75,7 +86,22 @@ export default({
 
             axios.post(urlBase + 'conexiones/usuario/login.php', formData).then(response => {
                 console.log(response.data)
-                if (response.data.status == 'OK') {
+
+                if (response.data.status == 'BLOQUEADO') {
+                  let timestamp = Number(response.data.timestamp)
+                  alert("Timestamp " + timestamp)
+                  let fecha = moment(timestamp * 1000).format('lll')
+                  alert('USUARIO BLOQUEADO HASTA ' + fecha)
+                  localStorage.setItem("bloqueoTimestamp", Number(response.data.timestamp))
+                } else {
+                  localStorage.removeItem("bloqueoTimestamp", null)
+                }
+
+                if (response.data.status == 'OK' || response.data.status == 'BLOQUEADO') {
+                    if (getters.getIntentos >= 10) {
+                      alert("Has intentado demasiadas veces, intentalo mas tarde")
+                      return
+                    }
                     let usuario = response.data.user
                     usuario.token = token
                     // Asignar al objeto usuario el "token" de su sesion
@@ -92,11 +118,32 @@ export default({
                     }
 
                     router.push('/')
-                } else if (response.data.status == 'BLOQUEADO') {
-                  let timestamp = Number(response.data.timestamp)
-                  alert("Timestamp " + timestamp)
-                  let fecha = moment(timestamp * 1000).format('lll')
-                  alert('USUARIO BLOQUEADO HASTA ' + fecha)
+                }
+                // else if (response.data.status == 'BLOQUEADO') {
+                //   let timestamp = Number(response.data.timestamp)
+                //   alert("Timestamp " + timestamp)
+                //   let fecha = moment(timestamp * 1000).format('lll')
+                //   alert('USUARIO BLOQUEADO HASTA ' + fecha)
+                // }
+                else {
+                  if (getters.getIntentos >= 5) {
+                    console.log("bromomento", getters.getHoraDesbloqueo, moment(), moment().diff(getters.getHoraDesbloqueo, "minutes"))
+                    if (!getters.getHoraDesbloqueo) {
+                      commit ("setHoraDesbloqueo", moment().add(5, "minutes") );
+                      alert("Has intentado demasiadas veces, intentalo mas tarde")
+                    } else if (moment().diff(getters.getHoraDesbloqueo, "minutes") > 0) {
+                      commit ("setIntentos", 0);
+                      commit ("setHoraDesbloqueo", null);
+                      console.log("add intento", getters.getIntentos)
+                      commit('addIntento')
+                    } else {
+                      alert("Has intentado demasiadas veces, intentalo mas tarde")
+                    }
+                  } else {
+                    console.log("add intento", getters.getIntentos)
+                    commit('addIntento')
+                    alert("Credenciales incorrectas")
+                  }
                 }
             })
         },
@@ -108,7 +155,18 @@ export default({
 
           axios.post(urlBase + 'conexiones/usuario/loginByToken.php', formData).then(response => {
             let data = response.data
-            if (data.status.includes('OK')) {
+            console.log('Data', data)
+            if (data.status.includes('OK') || response.data.status == 'BLOQUEADO') {
+              if (response.data.status == 'BLOQUEADO') {
+                let timestamp = Number(response.data.timestamp)
+                alert("Timestamp " + timestamp)
+                let fecha = moment(timestamp * 1000).format('lll')
+                alert('USUARIO BLOQUEADO HASTA ' + fecha)
+                localStorage.setItem("bloqueoTimestamp", Number(response.data.timestamp))
+              } else {
+                localStorage.removeItem("bloqueoTimestamp", null)
+              }
+
               data.user.token = token
               commit('setUsuario', data.user)
               dispatch('loadSesiones')
@@ -205,6 +263,12 @@ export default({
             }
             console.log("Token generado:", token)
             return token;
+        },
+        getIntentos (state) {
+          return state.intentos
+        },
+        getHoraDesbloqueo (state) {
+          return state.horaDesbloqueo
         }
     }
 })

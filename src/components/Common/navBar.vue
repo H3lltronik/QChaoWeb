@@ -16,7 +16,7 @@
             <b-navbar-nav>
                 <b-nav-item-dropdown text="Inicio" right>
                     <b-dropdown-item @click="goToRouter('forum')">
-                        Foro    
+                        Foro
                     </b-dropdown-item>
                     <b-dropdown-item @click="goToRouter('')">
                         Inicio
@@ -25,7 +25,7 @@
                 <!-- <b-nav-item>Tendencias</b-nav-item> -->
 
                 <b-nav-item-dropdown text="Eventos" right >
-                    <b-dropdown-item @click="goToRouter('crearEventos')" v-if="tipoUsuario != 'Normal' && hayUsuario">
+                    <b-dropdown-item @click="goToRouter('crearEventos')" v-if="tipoUsuario != 'Normal' && hayUsuario && !bloqueado">
                         Crear evento
                     </b-dropdown-item>
                     <b-dropdown-item @click="goToRouter('events')">
@@ -37,7 +37,7 @@
                 </b-nav-item-dropdown>
 
                 <b-nav-item-dropdown text="Soporte" right>
-                    <b-dropdown-item  @click="goToRouter('crearTaller')" v-if="tipoUsuario != 'Normal' && hayUsuario">
+                    <b-dropdown-item  @click="goToRouter('crearTaller')" v-if="tipoUsuario != 'Normal' && hayUsuario && !bloqueado">
                         Crear soporte
                     </b-dropdown-item>
                     <b-dropdown-item  @click="goToRouter('soporte')">
@@ -63,7 +63,7 @@
                 </b-nav-item-dropdown>
                 <!-- Iconos -->
                 <b-nav-item>
-                    <message-icon v-if="hayUsuario" @click="goToRouter('mensajes')"/>
+                    <message-icon v-if="hayUsuario && !bloqueado" @click="goToRouter('mensajes')"/>
                 </b-nav-item>
                 <b-nav-item>
                     <alertbox-icon v-if="hayUsuario" @click="goToRouter('notificaciones')"/>
@@ -100,7 +100,7 @@ export default {
             // this.$store.dispatch('buscar', tagsSeparados)
         },
         separarTags (tags) {
-            
+
         }
     },
     computed: {
@@ -119,6 +119,10 @@ export default {
                 return 0
             let user = this.$store.getters.getUsuario
             return user.nombredetipo
+        },
+        bloqueado () {
+          let bloqueoTimestamp = localStorage.getItem("bloqueoTimestamp")
+          return (bloqueoTimestamp !== null)
         }
     }
 }

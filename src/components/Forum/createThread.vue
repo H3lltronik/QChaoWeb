@@ -14,7 +14,7 @@
               <input v-model="urgente" type="checkbox" aria-label="Checkbox for following text input">
             </div>
           </div>
-          <input type="text" value="URGENTE" class="form-control" aria-label="URGENTE" disabled="false">
+          <input type="text" value="URGENTEE" class="form-control" aria-label="URGENTE" disabled="false">
         </div>
 
       </div>
@@ -29,6 +29,31 @@
           <button class="btn btn-primary btn-block" @click="editarPost ()">
             {{btnText}}
           </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="row justify-content-start">
+        <div class="col-auto mt-1 ml-n2">
+          <!-- https://www.npmjs.com/package/vue-tags-component -->
+          <vue-tags class="mx-auto my-auto mt-3"
+              style="z-index: 10;"
+              :active="activeTags"
+              :max-height="100"
+              :all="allTags"
+              :element-count-for-start-arrow-scrolling="1"
+              :tab-index="2"
+              :tag-creation-enabled="true"
+              :colors-enabled="false"
+              :tag-color-default="'green'"
+              :tag-list-label="'Seleccione sus tags'"
+              :placeholder="'Seleccione sus tags'"
+              @on-tag-added="onTagAdded"
+              @on-tag-removed="onTagRemoved"
+              @on-tag-list-opened="onTagListOpened"
+              @on-tag-list-closed="onTagListClosed"
+              @on-tag-created="onTagCreated"/>
         </div>
       </div>
     </div>
@@ -48,7 +73,15 @@ export default {
       tema: '',
       urgente: false,
       btnText: 'Publicar',
+      allTags: [],
+      activeTags: [],
     }
+  },
+  created () {
+      this.$store.dispatch('loadTags').then(res => {
+          console.log(res)
+          this.allTags = res
+      })
   },
   methods: {
     publicar () {
@@ -59,6 +92,7 @@ export default {
 
       let payload = {
         idUsuario: this.usuario.idUsuario,
+        tags: this.generateTags(),
         tema: this.tema,
         urgente: this.urgente,
         nickname: this.usuario.nickname,
@@ -73,6 +107,43 @@ export default {
         urgente: this.urgente
       }
       this.$store.dispatch('editarPost', payload)
+    },
+    generateTags () {
+        let aux = []
+        this.activeTags.forEach(element => {
+            aux.push(JSON.stringify(element))
+        });
+        return aux
+    },
+    onPickFile () {
+        this.$refs.fileInput.click()
+    },
+    onFilePicked () {
+        this.file = this.$refs.fileInput.files[0];
+    },
+    onTagAdded ($event) {
+        this.activeTags.push($event)
+    },
+    onTagRemoved ($event) {
+        console.log('removed', $event)
+        let index = this.activeTags.map(function(e) { return e.id; }).indexOf($event.id);
+        this.activeTags.splice(index, 1)
+    },
+    onTagListOpened ($event) {
+        console.log("Open", $event)
+    },
+    onTagListClosed ($event) {
+
+    },
+    onTagCreated ($event) {
+        console.log($event)
+
+        let aux = {...$event}
+        aux.id = this.numeroRandom(1, 500)
+        this.allTags.push(aux)
+    },
+    numeroRandom (min, max) {
+        return Math.floor(Math.random() * (+max - +min)) + +min;
     }
   },
   computed: {
@@ -102,5 +173,8 @@ export default {
 </script>
 
 <style>
-
+  .tags__list {
+    max-height: 500px;
+    overflow-y: auto;
+  }
 </style>

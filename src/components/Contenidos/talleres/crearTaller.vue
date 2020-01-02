@@ -9,7 +9,7 @@
                         <left-aside></left-aside>
                     </b-col>
                     <b-col md="6" >
-                      <b-card class="mt-5" align="left">
+                      <b-card class="mt-5" align="left" v-if="usuario !== null && !bloqueado">
                         <b-row>
                             <b-col md="12">
                               <b-row>
@@ -161,19 +161,23 @@ export default {
         },
         onTagCreated ($event) {
             console.log($event)
-        
+
             let aux = {...$event}
             aux.id = this.numeroRandom(1, 500)
             this.allTags.push(aux)
         },
         numeroRandom (min, max) {
-            return Math.floor(Math.random() * (+max - +min)) + +min; 
+            return Math.floor(Math.random() * (+max - +min)) + +min;
         }
     },
     computed: {
         usuario () {
             let user = this.$store.getters.getUsuario
             return user
+        },
+        bloqueado () {
+          let bloqueoTimestamp = localStorage.getItem("bloqueoTimestamp")
+          return (bloqueoTimestamp !== null)
         }
     }
 }

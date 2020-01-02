@@ -3,7 +3,7 @@
         <b-row>
             <b-col md="12">
                 <b-form-textarea size="sm" no-resize rows="3" v-model="descripcion"
-                type="text" placeholder="Descripcion de tu publicacion"/>
+                type="text" placeholder="Descripcion de tu publicacion" :maxLength="300"/>
             </b-col>
             <b-col md="12" class="mt-2">
                 <b-row>
@@ -79,6 +79,7 @@ export default {
                 nombreUsuario: this.usuario.nickname
             }
             if (this.file) {
+              console.log("PUBLICACION WEON", publicacion)
                 this.$store.dispatch('publicarShitpost', publicacion)
             } else {
                 alert("Favor de elegir un archivo")

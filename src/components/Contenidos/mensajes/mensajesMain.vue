@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div >
         <navbar-component></navbar-component>
-        <b-container fluid class="mt-5">
+        <b-container fluid class="mt-5" v-if="!bloqueado">
             <b-row>
                 <b-col sm="12" class="mx-auto">
                     <b-row>
@@ -38,8 +38,8 @@
                                 </b-col>
                                 <b-col md="12">
                                     <div class="input-group">
-                                        <b-form-input autocomplete="off" size="sm" type="text" placeholder="Escribe un comentario" 
-                                            v-model="mensajeUsuario"/>
+                                        <b-form-input autocomplete="off" size="sm" type="text" placeholder="Escribe un comentario"
+                                            v-model="mensajeUsuario" :maxLength="200"/>
                                         <span class="input-group-btn">
                                             <b-button size="sm" type="submit" @click="enviarMensaje">Enviar</b-button>
                                         </span>
@@ -90,7 +90,7 @@ export default {
             return urlBase + "media/usuarios/" + idUsuario + ".jpg"
         },
         enviarMensaje () {
-            
+
             let idDestino = this.activeChat.idDestino
             if (idDestino == this.usuario.idUsuario) {
                 idDestino = this.activeChat.idRemitente
@@ -99,14 +99,13 @@ export default {
             let payload = {
                 idChat: this.activeChat.idChat,
                 mensaje: {
+                    timestamp: this.moment.now(),
                     mensaje: this.mensajeUsuario,
                     idUsuario: this.usuario.idUsuario,
                     idDestino: idDestino, // Para notificaciones
                     nickname: this.usuario.nickname // Tambien para notificaciones
                 },
             }
-            console.log("MENSAJE ENVIADO: ", payload)
-            console.log("CHAT ACTIVO: ", this.activeChat)
             this.$store.dispatch('enviarMensaje', payload).then(res => {
                 this.mensajeUsuario = ''
                 this.scrollAlFondo(0)
@@ -135,6 +134,10 @@ export default {
         usuario () {
             let user = this.$store.getters.getUsuario
             return user
+        },
+        bloqueado () {
+          let bloqueoTimestamp = localStorage.getItem("bloqueoTimestamp")
+          return (bloqueoTimestamp !== null)
         },
         activeChat () {
             let aux = this.chats.find(auxFind => {

@@ -44,16 +44,34 @@ export default({
             formData.append('imagen_'+i, imagenes[i])
         }
 
-        axios.post(urlBase + 'conexiones/contenido/talleres/crearTaller.php', formData, 
+        axios.post(urlBase + 'conexiones/contenido/talleres/crearTaller.php', formData,
         {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
           console.log("Debug", response.data)
             if (response.data.status.includes('OK')) {
             alert('SE HA CREADO EL TALLER')
-            } else 
+            router.push('/')
+            } else
             alert('HUBO UN ERROR AL CREAR EL TALLER')
         }).catch(error => {
             console.log(error)
         })
+    },
+    calificarTaller ({commit, getters}, taller) {
+      let urlBase = getters.getUrlBase
+      let formData = new FormData ()
+      formData.set('idUsuario', taller.idUsuario)
+      formData.set('idEstablecimiento', taller.idEstablecimiento)
+      formData.set('calificacion', taller.calificacion)
+      axios.post(urlBase + 'conexiones/contenido/talleres/puntuarTaller.php', formData).then(response => {
+        console.log('Puntuar', response.data)
+        if (response.data.status.includes('OK')){
+          alert(response.data.response)
+        } else {
+          alert('ERROR AL REGISTRAR LA CALIFICACION')
+        }
+      }).catch(error => {
+        console.log(error)
+      })
     },
     editarSoporte ({commit, getters}, payload) {
       let urlBase = getters.getUrlBase
@@ -73,12 +91,12 @@ export default({
             formData.append('imagen_'+i, imagenes[i])
         }
 
-        axios.post(urlBase + 'conexiones/contenido/talleres/editarTaller.php', formData, 
+        axios.post(urlBase + 'conexiones/contenido/talleres/editarTaller.php', formData,
         {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
           console.log("Debug", response.data)
             if (response.data.status.includes('OK')) {
             alert('SE HA EDITADO EL TALLER')
-            } else 
+            } else
             alert('HUBO UN ERROR AL EDITAR EL TALLER')
         }).catch(error => {
             console.log(error)
@@ -91,6 +109,33 @@ export default({
         if (response.data.status.includes('OK')) {
           commit('setTalleres', talleres)
           console.log('talleres', talleres)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    cargarLastTalleres ({commit, getters}) {
+      let urlBase = getters.getUrlBase
+      axios.post(urlBase + 'conexiones/contenido/talleres/getLastsTalleres.php').then(response => {
+        let talleres = response.data.talleres
+        if (response.data.status.includes('OK')) {
+          commit('setTalleres', talleres)
+          console.log('talleres', talleres)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    eliminarTaller ({commit, getters}, payload) {
+      let urlBase = getters.getUrlBase
+
+      let formData = new FormData ()
+      formData.set('idEstablecimiento', payload.idEstablecimiento)
+
+      axios.post(urlBase + 'conexiones/contenido/talleres/eliminarTaller.php', formData).then(response => {
+        if (response.data.status.includes('OK')) {
+          alert("Taller Eliminado")
+          window.location.reload()
         }
       }).catch(error => {
         console.log(error)
@@ -126,7 +171,7 @@ export default({
         formData.append('imagen_'+i, imagenes[i])
       }
 
-      axios.post(urlBase + 'conexiones/usuario/talleres/solicitarVerificacion.php', formData, 
+      axios.post(urlBase + 'conexiones/usuario/talleres/solicitarVerificacion.php', formData,
       {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
         let data = response.data
         console.log("Data", data)
@@ -140,7 +185,7 @@ export default({
               tipo: 'verificacion'
           }
           firebase.database().ref('notificacionesAdmin/').push(notificacion).then(res => {
-              firebase.database().ref('notificacionesAdmin/' + res.key).child('idNotificacion').set(res.key)   
+              firebase.database().ref('notificacionesAdmin/' + res.key).child('idNotificacion').set(res.key)
           })
 
         }  else {
