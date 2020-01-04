@@ -108,6 +108,43 @@ export default {
         this.imagenes = this.$refs.fileInput.files
     },
     crearEvento () {
+      let errors = [];
+      let anyError = false;
+      // chingos de if para verificacion
+      if (this.imagenes.length <= 0) {
+        errors.push("\nFavor de elegir una imagen");
+        anyError = true;
+      }
+      if (this.nombre.length <= 0) {
+        errors.push("\nFavor de ingresar un nombre");
+        anyError = true;
+      }
+      if (this.descripcion.length <= 0) {
+        errors.push("\nFavor de ingresar una descripcion");
+        anyError = true;
+      }
+      if (this.domicilio.length <= 0) {
+        errors.push("\nFavor de ingresar un domicilio");
+        anyError = true;
+      }
+      if (this.fecha.length <= 0) {
+        errors.push("\nFavor de ingresar una fecha");
+        anyError = true;
+      }
+      if (this.entrada.length <= 0) {
+        errors.push("\nFavor de ingresar una entrada");
+        anyError = true;
+      }
+      if (this.ciudad.length <= 0) {
+        errors.push("\nFavor de ingresar una ciudad");
+        anyError = true;
+      }
+
+      if (anyError) {
+        alert("Favor de completar los campos: " + errors);
+        return;
+      }
+
       let evento = {
         idUsuario: this.usuario.idUsuario,
         imagenes: this.imagenes,

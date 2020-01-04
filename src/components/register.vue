@@ -144,8 +144,8 @@ export default {
         },
         registerUser () {
           // Username length
-          if (newAccount.username.length > 30) { alert ("El tamaño maximo para el nickname son 30 caracteres"); }
-          if (newAccount.password.length > 40) { alert ("El tamaño maximo para la contraseña son 40 caracteres"); }
+          if (this.newAccount.username.length > 30) { alert ("El tamaño maximo para el nickname son 30 caracteres"); }
+          if (this.newAccount.password.length > 40) { alert ("El tamaño maximo para la contraseña son 40 caracteres"); }
 
             let urlBase = this.$store.getters.getUrlBase
             let newAccount = this.newAccount
@@ -158,6 +158,8 @@ export default {
                 type = 2
             else if (newAccount.accountType == 'Administrator')
                 type = 3
+
+                console.log("Newaccount", newAccount)
 
             formData.set('username', newAccount.username)
             formData.set('password', newAccount.password)
