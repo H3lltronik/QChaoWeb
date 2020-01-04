@@ -90,7 +90,8 @@
                                   <staroutline-icon/>{{calificacion(taller)}} de calificacion
                               </h6>
                               <div class="text-muted my-auto mx-1" style="font-size: 8pt;">
-                                  ( de {{taller.calificaciones.length}} calificacion[es] )
+                                  <div v-if="Array.isArray(taller.calificaciones)">( de {{taller.calificaciones.length || 0 }} calificacion[es] )</div>
+                                  <div v-else>( de 0 calificacion[es] )</div>
                               </div>
 
                             <hr class="my-3">
@@ -158,13 +159,17 @@ export default {
     methods: {
       calificacion (taller) {
           let total = 0;
-          if (taller.calificaciones.length > 0) {
-              taller.calificaciones.forEach(cal => {
-                  total += Number(cal.Calificacion)
-              });
-              return (total / taller.calificaciones.length)
+          if (Array.isArray(taller.calificaciones)) {
+            if (taller.calificaciones.length > 0) {
+                taller.calificaciones.forEach(cal => {
+                    total += Number(cal.Calificacion)
+                });
+                return (total / taller.calificaciones.length)
+            } else {
+                return 0;
+            }
           } else {
-              return 0;
+            return 0;
           }
         },
         calificarTaller (taller) {

@@ -19,7 +19,7 @@
                     </b-row>
                 </b-col>
             </b-row>
-        </b-container> 
+        </b-container>
     </div>
 </template>
 
@@ -33,11 +33,11 @@ export default {
     created () {
       setTimeout(() => {
           this.$store.dispatch('loadTalleresUsuario', this.usuario.idUsuario)
-      }, 1000);  
+      }, 1000);
     },
     computed: {
         ...mapGetters({
-            
+
         }),
         usuario () {
             let user = this.$store.getters.getUsuario
@@ -46,7 +46,7 @@ export default {
         talleres () {
             let talleres = this.$store.getters.getTalleresUsuario
             if (talleres) {
-                return talleres
+                return (talleres)? talleres:[]
             } else {
                 return []
             }
