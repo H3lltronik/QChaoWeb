@@ -96,6 +96,7 @@ export default({
           console.log("Debug", response.data)
             if (response.data.status.includes('OK')) {
             alert('SE HA EDITADO EL TALLER')
+            router.push("/soporte")
             } else
             alert('HUBO UN ERROR AL EDITAR EL TALLER')
         }).catch(error => {
@@ -135,7 +136,8 @@ export default({
       axios.post(urlBase + 'conexiones/contenido/talleres/eliminarTaller.php', formData).then(response => {
         if (response.data.status.includes('OK')) {
           alert("Taller Eliminado")
-          window.location.reload()
+          // window.location.reload()
+          router.push("soporte")
         }
       }).catch(error => {
         console.log(error)

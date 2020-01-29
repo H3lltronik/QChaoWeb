@@ -1,6 +1,6 @@
 <template>
     <b-row class="mt-3">
-        <b-col md="1" class="">
+        <div class="col-auto">
             <b-row>
                 <img class="mx-auto" height="40"
                 :src="imagen" alt="">
@@ -10,15 +10,15 @@
                     {{nickname}}
                 </small>
             </b-row>
-        </b-col>
-        <b-col md="11" class="my-auto pl-4">
+        </div >
+        <div class="my-auto pl-4 col-auto" style="flex: 1">
             <!-- De esta forma de alinean y juntan un boton y un input -->
             <div class="input-group">
                 <b-form-textarea size="sm" no-resize rows="3"
                 :disabled="true" type="text" :value="comentario"/>
             </div>
-        </b-col>
-        
+        </div>
+
     </b-row>
 </template>
 

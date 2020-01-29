@@ -1,8 +1,8 @@
 <template>
-    <div class="row mb-4">
+    <div class="row mb-4" v-if="usuario.idUsuario">
       <div class="col-10">
         <div class="form-group">
-          <textarea v-model="comentario" placeholder="Comentario..." class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+          <textarea v-model="comentario" placeholder="Comentario...." class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
           <!-- hola {{editar}} -->
         </div>
       </div>

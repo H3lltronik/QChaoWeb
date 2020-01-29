@@ -56,10 +56,14 @@ export default {
         formData.set('password', this.cuenta.password)
         formData.set('telefono', this.cuenta.telefono)
         this.axios.post(this.urlBase + 'conexiones/usuario/saveGeneralConf.php', formData).then(response => {
-          if (response.data.status.includes('OK')) {
-            alert("Se ha actualizado la informacion")
-          } else {
-            alert("ERROR AL ACTUALIZAR" + response.data.response)
+          try {
+            if (response.data.status.includes('OK')) {
+              alert("Se ha actualizado la informacion")
+            } else {
+              alert("ERROR AL ACTUALIZAR" + response.data.response)
+            }
+          } catch (error) {
+            alert("El nombre ya ha sido tomado")
           }
         }).catch(error => {
           console.log(error)

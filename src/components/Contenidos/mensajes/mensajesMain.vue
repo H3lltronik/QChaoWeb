@@ -15,7 +15,7 @@
                                             <img class="mx-auto" height="50" width="50"
                                             :src="imgGen(mensaje.idUsuario)" alt="">
                                             <small class="text-muted text-center mt-1" style="font-size: 8pt;">
-                                                <div v-if="mensaje.idUsuario == activeChat.idRemitente">Remitente</div> <div v-else>Destino</div>
+                                                <div v-if="mensaje.idUsuario == activeChat.idRemitente">{{activeChat.nombreOtro}}</div> <div v-else>{{usuario.nickname}}</div>
                                             </small>
                                         </b-col>
                                         <!-- De esta forma de alinean y juntan un boton y un input -->
@@ -27,7 +27,7 @@
                                             <img class="mx-auto" height="50" width="50"
                                             :src="imgGen(mensaje.idUsuario)" alt="">
                                             <small class="text-muted text-center mt-1" style="font-size: 8pt;">
-                                                <div v-if="mensaje.idUsuario == activeChat.idRemitente">Remitente</div> <div v-else>Destino</div>
+                                                <div v-if="mensaje.idUsuario == activeChat.idRemitente">{{activeChat.nombreOtro}}</div> <div v-else>{{usuario.nickname}}</div>
                                             </small>
                                         </b-col>
                                 </b-row>

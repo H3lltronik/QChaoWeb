@@ -14,25 +14,32 @@
                                     <b-col md="12">
                                     <b-row>
                                         <b-col md="12" class="mt-2">
+                                          <div>Titulo</div>
                                         <b-form-input size="sm" type="text" placeholder="Nombre del evento" v-model="nombre"/>
                                         </b-col>
                                         <b-col md="12" class="mt-2">
+                                          <div>Descripcion</div>
                                         <b-form-textarea size="sm" no-resize rows="3" type="text" v-model="descripcion"
                                         placeholder="Descripcion del evento"/>
                                         </b-col>
                                         <b-col md="6" class="mt-2">
+                                          <div>Domicilio</div>
                                         <b-form-input size="sm" type="text" placeholder="Domicilio" v-model="domicilio"/>
                                         </b-col>
                                         <b-col md="3" class="mt-2">
+                                          <div>Fecha</div>
                                         <b-form-input size="sm" type="text" placeholder="aaaa/mm/dd" v-model="fecha"/>
                                         </b-col>
                                         <b-col md="3" class="mt-2">
+                                          <div>Entrada</div>
                                         <b-form-input size="sm" type="text" placeholder="$ Entrada" v-model="entrada"/>
                                         </b-col>
                                     <b-col md="6" class="mt-2">
+                                      <div>Ciudad</div>
                                         <b-form-input size="sm" type="text" placeholder="Ciudad" v-model="ciudad"/>
                                     </b-col>
                                         <b-col md="6" class="mt-2">
+                                          <div>Tags</div>
                                         <vue-tags class="mx-auto my-auto mt-3"
                                             style="z-index: 10;"
                                             :active="activeTags"
@@ -75,7 +82,7 @@
                     </b-row>
                 </b-col>
             </b-row>
-        </b-container> 
+        </b-container>
     </div>
 </template>
 
@@ -165,13 +172,13 @@ export default {
         },
         onTagCreated ($event) {
             console.log($event)
-        
+
             let aux = {...$event}
             aux.id = this.numeroRandom(1, 500)
             this.allTags.push(aux)
         },
         numeroRandom (min, max) {
-            return Math.floor(Math.random() * (+max - +min)) + +min; 
+            return Math.floor(Math.random() * (+max - +min)) + +min;
         }
     },
     computed: {

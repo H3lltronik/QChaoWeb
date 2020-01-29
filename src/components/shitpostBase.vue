@@ -27,6 +27,12 @@
                                                     <small class="text-muted" style="font-size: 8pt;">{{publicacion.fecha}}</small>
                                                 </b-row>
                                             </b-col>
+
+                                            <div style="flex: 1"></div>
+                                            <div v-if="hayUsuario && usuario.idUsuario == publicacion.idUsuario" @click="eliminarShitpost (publicacion.idShitpost)">
+                                              <button class="btn mb-2 btn-danger btn-sm">Eliminar</button>
+                                            </div>
+
                                         </b-row>
                                     </b-col>
                                     <b-col md="12" class="noPadding">
@@ -69,7 +75,7 @@
                                                 <small class="ml-2">{{publicacion.comentarios.length}}</small>
                                             </div>
                                             <div class="mr-5 my-auto">
-                                                <b-button size="sm" variant="danger" class="mb-2" @click="reportar(publicacion)" v-if="hayUsuario && !bloqueado">
+                                                <b-button size="sm" variant="danger" class="mb-2" @click="reportar(publicacion)" v-if="hayUsuario && !bloqueado && !mismoUsuario(publicacion.idUsuario)">
                                                     Reportar
                                                 </b-button>
                                             </div>
@@ -77,7 +83,6 @@
                                         <hr>
                                     </b-col>
                                     <b-col md="12" class="mt-2 noPadding ">
-
                                         <comentario-comentar :idUsuario="usuario.idUsuario" v-if="hayUsuario && !bloqueado"
                                         :imagen="usuario.imagen" :idShitpost="publicacion.idShitpost"
                                         :nombre="usuario.Nombre"/>
@@ -137,6 +142,16 @@ export default {
             }
             this.$store.dispatch('indicarLike', publicacion)
         },
+        eliminarShitpost (idShitpost) {
+          if (this.bloqueado) {
+            return;
+          }
+            let publicacion = {
+                idUsuario: this.usuario.idUsuario,
+                idShitpost: idShitpost,
+            }
+            this.$store.dispatch('eliminarShitpost', publicacion)
+        },
         goToRouter (route) {
           this.$router.push("/"+route)
         },
@@ -157,7 +172,10 @@ export default {
                 this.$store.dispatch('generarReporte', payload)
             }
             // console.log("publicacion", publicacion)
-        }
+        },
+        mismoUsuario (idUsuario) {
+          return (this.usuario.idUsuario == idUsuario)
+        },
     },
     computed: {
         // publicaciones () {
@@ -172,7 +190,7 @@ export default {
         // },
         hayUsuario () {
             let user = this.$store.getters.getUsuario
-            if (user)
+            if (user.idUsuario)
                 return true
             else
                 return false

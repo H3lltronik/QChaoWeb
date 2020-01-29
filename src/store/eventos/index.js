@@ -96,7 +96,8 @@ export default({
       axios.post(urlBase + 'conexiones/contenido/eventos/eliminarEvento.php', formData).then(response => {
         if (response.data.status.includes('OK')) {
           alert("Evento Eliminado")
-          window.location.reload()
+          // window.location.reload()
+          router.push("events")
         }
       }).catch(error => {
         console.log(error)
@@ -119,13 +120,13 @@ export default({
         console.log(error)
       })
     },
-    registrarAsistencia ({commit}, evento) {
+    registrarAsistencia ({commit, getters}, evento) {
       let urlBase = getters.getUrlBase
       let formData = new FormData ()
       formData.set('idUsuario', evento.idUsuario)
       formData.set('idEvento', evento.idEvento)
 
-      axios.post(urlBase + 'contenido/eventos/registrarAsistencia.php', formData).then(response => {
+      axios.post(urlBase + 'conexiones/contenido/eventos/registrarAsistencia.php', formData).then(response => {
         console.log('Puntuar', response.data)
         if (response.data.status.includes('OK')){
           alert(response.data.response)
@@ -175,6 +176,7 @@ export default({
       {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
         if (response.data.status.includes('OK')) {
           alert('SE HA EDITADO EL EVENTO')
+          router.push("/events")
         } else
           alert('HUBO UN ERROR AL CREAR EL EVENTO')
       }).catch(error => {

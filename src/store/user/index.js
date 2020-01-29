@@ -186,7 +186,7 @@ export default({
           let token = getters.getUsuario.token
           let formData = new FormData()
           formData.set('token', token)
-          alert("token: " + token);
+          // alert("token: " + token);
 
           axios.post(urlBase + 'conexiones/usuario/logout.php', formData).then(response => {
             console.log("Debug cerar sesion", response.data, getters.getUsuario)
@@ -261,7 +261,7 @@ export default({
             for(var i = 0; i < n; i++) {
                 token += chars[Math.floor(Math.random() * chars.length)];
             }
-            console.log("Token generado:", token)
+            // console.log("Token generado:", token)
             return token;
         },
         getIntentos (state) {

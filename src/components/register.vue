@@ -7,21 +7,21 @@
                         QChaoWeb!
                     </b-navbar-brand>
                     <b-navbar-nav class="ml-auto">
-                        <b-nav-item @click="goToRoute ('')" >Home</b-nav-item>
+                        <b-nav-item @click="goToRoute ('')" >Inicio</b-nav-item>
                     </b-navbar-nav>
                 </b-navbar>
             </div>
             <div class="centrado">
-                <b-card border-variant="dark" bg-variant="dark" header="Register"
+                <b-card border-variant="dark" bg-variant="dark" header="Registrar"
                 :title="instructions[stepCount]" v-if="!login"
                 text-variant="white" class="text-center" header-border-variant="secondary">
                 <!-- Step 1 -->
                 <div v-if="step1" class="mt-2">
-                    <b-input-group size="md" prepend="Username" class="mb-3">
+                    <b-input-group size="md" prepend="Usuario" class="mb-3">
                         <b-form-input v-model="newAccount.username" :maxLength="30"/>
                     </b-input-group>
 
-                    <b-input-group size="md" prepend="Password" class="mb-3">
+                    <b-input-group size="md" prepend="Contraseña" class="mb-3">
                         <b-form-input v-model="newAccount.password" type="password" :maxLength="40"/>
                     </b-input-group>
 
@@ -32,7 +32,7 @@
                     <b-input-group size="md" prepend="Nickname" class="mb-3" >
                         <b-form-input v-model="newAccount.nickname" :maxLength="30"/>
 
-                        <b-dropdown text="City" class="mx-5" v-model="newAccount.city">
+                        <b-dropdown text="Ciudad" class="mx-5" v-model="newAccount.city">
                             <b-dropdown-item v-for="(aux, index) in citys" :key="index" @click="selectCity (aux)">
                                 {{aux}}
                             </b-dropdown-item>
@@ -40,17 +40,17 @@
                     </b-input-group>
 
                     <b-button variant="success" block @click="nextStep" :disabled="!next">
-                        Next Step
+                        Siguiente paso
                     </b-button>
-                    <b-card-text class="my-2">Or</b-card-text>
-                    <b-button variant="primary" block @click="login = true">Sign up</b-button>
+                    <b-card-text class="my-2">O</b-card-text>
+                    <b-button variant="primary" block @click="login = true">Iniciar sesion</b-button>
                 </div>
                 <!-- Step 2 -->
                 <div v-if="step2">
                     <div>
                         <b-button-group class="my-2">
                             <b-button @click="changeAccountType (1)">Normal</b-button>
-                            <b-button @click="changeAccountType (2)">Business</b-button>
+                            <b-button @click="changeAccountType (2)">Negocios</b-button>
                         </b-button-group>
 
                         <b-card-text>
@@ -58,26 +58,26 @@
                         </b-card-text>
 
                     </div>
-                    <b-button variant="primary" class="my-2 mr-1" style="width: 40%;" @click="previousStep">Return</b-button>
-                    <b-button variant="success" :disabled="!register" class="my-2" style="width: 40%;" @click="registerUser">Register</b-button>
+                    <b-button variant="primary" class="my-2 mr-1" style="width: 40%;" @click="previousStep">Regresar</b-button>
+                    <b-button variant="success" :disabled="!register" class="my-2" style="width: 40%;" @click="registerUser">Registrarse</b-button>
                 </div>
                 </b-card>
 
-                <b-card v-if="login" border-variant="dark" bg-variant="dark" header="Login"
+                <b-card v-if="login" border-variant="dark" bg-variant="dark" header="Iniciar"
                 text-variant="white" class="text-center" header-border-variant="secondary">
-                    <b-input-group size="md" prepend="Username" class="mb-3">
+                    <b-input-group size="md" prepend="Usuario" class="mb-3">
                         <b-form-input v-model="loginAccount.username" :maxLength="30"/>
                     </b-input-group>
 
-                    <b-input-group size="md" prepend="Password" class="mb-3">
+                    <b-input-group size="md" prepend="Contraseña" class="mb-3">
                         <b-form-input v-model="loginAccount.password" type="password" :maxLength="40"/>
                     </b-input-group>
 
                     <b-button variant="success" block @click="loginMethod" :disabled="!loginAuth">
-                        Log in
+                        Iniciar sesion
                     </b-button>
-                    <b-card-text class="my-2">Or</b-card-text>
-                    <b-button variant="primary" block @click="login = false">Register</b-button>
+                    <b-card-text class="my-2">O</b-card-text>
+                    <b-button variant="primary" block @click="login = false">Registrar</b-button>
                 </b-card>
             </div>
         </div>
@@ -94,10 +94,10 @@ export default {
             readyRegister: false,
             register: false,
             next: false,
-            instructions: ['Fill the blanks','Select account type'],
+            instructions: ['Llena los campos','Selecciona un tipo de usuario'],
             stepCount: 1,
             citys: ['Guadalajara', 'El Gabacho'],
-            accountDetails: ['Select a plan','Normal Account','Business Acount'],
+            accountDetails: ['Selecciona un plan','Cuenta Normal','Cuenta de Negocios'],
             accountCounter: 0,
             newAccount: {
                 username: '',

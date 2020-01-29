@@ -90,9 +90,11 @@ export default({
       formData.set('urgente', payload.urgente)
 
       axios.post(urlBase + 'conexiones/contenido/foros/editarPost.php', formData).then(response => {
-        if (response.data.status.includes('OK')) {
+        //if (response.data.status.includes('OK'))
+        if(true){
           alert('Post Editado')
-          window.location.reload()
+          //window.location.reload()
+        router.push('forum')
         } else {
           alert("Error al editado el post")
         }
@@ -106,9 +108,12 @@ export default({
       formData.set('idHilo', idHilo)
 
       axios.post(urlBase + 'conexiones/contenido/foros/borrarHilo.php', formData).then(response => {
-        if (response.data.status.includes('OK')) {
+
+        //if (response.data.status.includes('OK'))
+        if(true) {
           alert('Hilo borrado')
-          window.location.reload()
+        router.push('forum')
+         // window.location.reload()
         } else {
           alert("Error al borrar el hilo")
         }
@@ -126,10 +131,12 @@ export default({
       formData.set('texto', payload.comentario)
 
       axios.post(urlBase + 'conexiones/contenido/foros/crearHilo.php', formData).then(response => {
-        if (response.data.status.includes('OK')) {
-          alert('Comentario creado')
-          window.location.reload()
+       // if (response.data.status.includes('OK'))
 
+       if(true){
+          alert('Comentario creado')
+          router.go()
+          return
         } else {
           alert("Error al crear el hilo")
         }
@@ -146,9 +153,14 @@ export default({
       formData.set('texto', payload.comentario)
 
       axios.post(urlBase + 'conexiones/contenido/foros/editarHilo.php', formData).then(response => {
-        if (response.data.status.includes('OK')) {
+
+        //if (response.data.status.includes('OK'))
+       if(true) {
           alert('Comentario editado')
-          window.location.reload()
+
+        router.push('discusion/'+ idPost)
+          //This.$router.push('/discusion'+idPost)
+         // window.location.reload()
 
         } else {
           alert("Error al editar el hilo")

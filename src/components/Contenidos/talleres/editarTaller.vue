@@ -14,25 +14,32 @@
                             <b-col md="12">
                               <b-row>
                                 <b-col md="12" class="mt-2">
+                                  <div>Titulo</div>
                                   <b-form-input size="sm" type="text" placeholder="Nombre del taller" v-model="nombre"/>
                                 </b-col>
                                 <b-col md="12" class="mt-2">
+                                  <div>Descripcion</div>
                                   <b-form-textarea size="sm" no-resize rows="3" type="text" v-model="descripcion"
                                   placeholder="Descripcion del taller"/>
                                 </b-col>
                                 <b-col md="6" class="mt-2">
+                                  <div>Domiclio</div>
                                   <b-form-input size="sm" type="text" placeholder="Domicilio" v-model="domicilio"/>
                                 </b-col>
                                 <b-col md="6" class="mt-2">
+                                  <div>Horario</div>
                                   <b-form-input size="sm" type="text" placeholder="Horarios" v-model="horarios"/>
                                 </b-col>
                                <b-col md="6" class="mt-2">
+                                 <div>Ciudad</div>
                                   <b-form-input size="sm" type="text" placeholder="Ciudad" v-model="ciudad"/>
                                </b-col>
                                <b-col md="6" class="mt-2">
+                                 <div>Contacto</div>
                                   <b-form-input size="sm" type="number" placeholder="Contacto" v-model="contacto"/>
                                </b-col>
                                 <b-col md="12" class="mt-2">
+                                  <div>Tags</div>
                                   <vue-tags class="mx-auto my-auto mt-3"
                                     style="z-index: 10;"
                                     :active="activeTags"
@@ -52,6 +59,7 @@
                                 </b-col>
                                 <b-col md="12" class="mt-2 d-flex">
                                     <b-row class="mx-auto">
+                                  <div>Tipo de soporte</div>
                                       <b-dropdown text="Tipo de establecimiento" class="mx-5" v-model="tipo" block size="sm">
                                           <b-dropdown-item value="Refaccionaria" @click="selectTipo('Refaccionaria')">
                                               Refaccionaria
@@ -184,13 +192,13 @@ export default {
         },
         onTagCreated ($event) {
             console.log($event)
-        
+
             let aux = {...$event}
             aux.id = this.numeroRandom(1, 500)
             this.allTags.push(aux)
         },
         numeroRandom (min, max) {
-            return Math.floor(Math.random() * (+max - +min)) + +min; 
+            return Math.floor(Math.random() * (+max - +min)) + +min;
         }
     },
     computed: {

@@ -100,6 +100,23 @@ export default({
 
             })
         },
+        eliminarShitpost ({commit, getters}, publicacion) {
+            let urlBase = getters.getUrlBase
+            let formData = new FormData ()
+            formData.set('idShitpost', publicacion.idShitpost)
+
+            axios.post(urlBase + 'conexiones/contenido/shitpost/eliminarShitpost.php', formData).then(response => {
+                let data = response.data
+                if (data.status.includes('OK')) {
+                  alert("Post eliminado")
+                  window.location.reload()
+                } else {
+                  alert("Error al eliminar el post: " + data.response)
+                }
+            }).catch(error => {
+
+            })
+        },
         publicarShitpost ({commit, getters}, publicacion) {
             let urlBase = getters.getUrlBase
             let formData = new FormData();
@@ -133,6 +150,8 @@ export default({
                 console.log("Subido xd", response.data)
                 console.log("Nueva publicacion", newPublicacion, 'PARAMETRO', publicacion)
                 window.location.reload()
+
+                // router.push("/")
             }).catch(function(){
                 console.log('FAILURE!!');
             });

@@ -142,11 +142,11 @@ export default {
             anyError = true;
           }
           if (this.contacto.length <= 0) {
-            errors.push("\nFavor de ingresar una fecha");
+            errors.push("\nFavor de ingresar una contacto");
             anyError = true;
           }
           if (this.horarios.length <= 0) {
-            errors.push("\nFavor de ingresar una entrada");
+            errors.push("\nFavor de ingresar una horarios");
             anyError = true;
           }
           if (this.ciudad.length <= 0) {

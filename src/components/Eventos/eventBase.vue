@@ -30,7 +30,7 @@
                         <b-card-text class="text-left">
                             <b-row >
                                 <h4 class="h4 my-auto">{{evento.titulo}}</h4>
-                                <b-button size="sm" variant="danger" class="ml-2" @click="reportar(evento)" v-if="hayUsuario && !bloqueado">
+                                <b-button size="sm" variant="danger" class="ml-2" @click="reportar(evento)" v-if="hayUsuario && !bloqueado && !mismoUsuario(evento.idUsuario)">
                                     Reportar
                                 </b-button>
                                 <b-button class="ml-auto" size="sm" :disabled="eventoPasado(evento)" v-if="hayUsuario && !bloqueado"
@@ -144,6 +144,9 @@ export default {
                 return true
             else
                 return false
+        },
+        mismoUsuario (idUsuario) {
+          return (this.usuario.idUsuario == idUsuario)
         },
         getImageUrl (evento, imgIndex) {
             let urlBase = this.$store.getters.getUrlBase

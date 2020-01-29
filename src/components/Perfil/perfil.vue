@@ -45,7 +45,7 @@ export default {
     },
     data () {
         return {
-            
+
         }
     },
     created () {
@@ -70,7 +70,7 @@ export default {
           do{
                 dias = prompt(mensaje)
                 dias = Number(dias)
-                if (dias == 0){ // Osea que cancelo 
+                if (dias == 0){ // Osea que cancelo
                   alert('cancelar')
                   return
                 }
@@ -78,7 +78,7 @@ export default {
           fechaFinal = this.moment(timestamp).add(dias, 'days').valueOf();
           // console.log("Fecha desbloqueo", fechaFinal, this.moment(fechaFinal).format('lll'))
           // WARD
-          borrar = confirm('Estas seguro que desea bloquar a este usuario?')
+          borrar = confirm('Estas seguro que desea bloquear a este usuario?')
           if (borrar) {
               let payload = {
                   idUsuario: this.idPerfil,

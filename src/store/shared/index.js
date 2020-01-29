@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export default({
     state: {
-        urlBase: 'http://localhost/QChao/',
+        urlBase: 'http://qchaoweb.com/QChao/',
         loading: false,
         tags: [],
     },
