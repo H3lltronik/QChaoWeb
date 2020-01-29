@@ -26,7 +26,7 @@
                                     <div class="row d-flex justify-content-between align-items-center">
                                       <div class="d-flex align-items-center">
                                         <span class="text-muted" style="font-size: 9pt;">Por <a href="#" @click.prevent="goToRouter('perfil/' + post.idUsuario)">{{post.nickname}}</a></span>
-                                        <span @click="deletePost ()" v-if="post.idUsuario == usuario.idUsuario" style="cursor: pointer;">
+                                        <span @click="deletePost (post.idPost)" v-if="post.idUsuario == usuario.idUsuario" style="cursor: pointer;">
                                           <close-icon></close-icon>
                                         </span>
                                       </div>
@@ -66,12 +66,11 @@ export default {
       goToRouter (route) {
         this.$router.push("/"+route)
       },
-      deletePost () {
-        let confirmacion = confirm('De verdad deseas borrar este post?');
+      deletePost (idPost) {
+        let confirmacion = confirm('Confirmas que deseas borrar este post?');
         if (confirmacion) {
-
+          this.$store.dispatch('deletePost', { idPost })
         }
-        // this.$store.dispatch('deletePost')
       }
     },
     computed: {

@@ -127,6 +127,28 @@ export default({
         alert('Error al borrar el hilo', error)
       })
     },
+    deletePost ({commit, getters}, payload) {
+      let urlBase = getters.getUrlBase
+      let formData = new FormData ()
+      formData.set('idPost', payload.idPost)
+
+      axios.post(urlBase + 'conexiones/contenido/foros/borrarPost.php', formData).then(response => {
+
+        //if (response.data.status.includes('OK'))
+        if(true) {
+          alert('Post borrado')
+          router.push("/")
+          setTimeout(() => {
+            router.push("/forum" )
+          }, 200);
+         // window.location.reload()
+        } else {
+          alert("Error al borrar el hilo")
+        }
+      }).catch(error => {
+        alert('Error al borrar el hilo', error)
+      })
+    },
     crearHilo ({commit, getters}, payload) {
       let urlBase = getters.getUrlBase
 
