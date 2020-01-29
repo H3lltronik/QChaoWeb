@@ -101,7 +101,11 @@ export default {
     deleteHilo (idHilo) {
       let confirmacion = confirm('De verdad deseas borrar este hilo?');
       if (confirmacion) {
-        this.$store.dispatch('deleteHilo', idHilo)
+        let payload = {
+          idHilo,
+          idPost: this.$route.params.idPost
+        }
+        this.$store.dispatch('deleteHilo', payload)
       }
     },
     editandoHilo (hilo) {

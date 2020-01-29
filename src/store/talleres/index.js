@@ -137,7 +137,7 @@ export default({
         if (response.data.status.includes('OK')) {
           alert("Taller Eliminado")
           // window.location.reload()
-          router.push("soporte")
+          router.push("/soporte")
         }
       }).catch(error => {
         console.log(error)

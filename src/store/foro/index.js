@@ -94,7 +94,10 @@ export default({
         if(true){
           alert('Post Editado')
           //window.location.reload()
-        router.push('forum')
+          router.push("/forum")
+            setTimeout(() => {
+              router.push("/discusion/" + payload.idPost)
+            }, 200);
         } else {
           alert("Error al editado el post")
         }
@@ -102,17 +105,20 @@ export default({
         alert('Error al editado el post', error)
       })
     },
-    deleteHilo ({commit, getters}, idHilo) {
+    deleteHilo ({commit, getters}, payload) {
       let urlBase = getters.getUrlBase
       let formData = new FormData ()
-      formData.set('idHilo', idHilo)
+      formData.set('idHilo', payload.idHilo)
 
       axios.post(urlBase + 'conexiones/contenido/foros/borrarHilo.php', formData).then(response => {
 
         //if (response.data.status.includes('OK'))
         if(true) {
           alert('Hilo borrado')
-        router.push('forum')
+          router.push("/forum")
+          setTimeout(() => {
+            router.push("/discusion/" + payload.idPost)
+          }, 200);
          // window.location.reload()
         } else {
           alert("Error al borrar el hilo")
@@ -135,7 +141,10 @@ export default({
 
        if(true){
           alert('Comentario creado')
-          router.go()
+          router.push("/forum")
+          setTimeout(() => {
+            router.push("/discusion/" + payload.idPost)
+          }, 200);
           return
         } else {
           alert("Error al crear el hilo")
@@ -158,7 +167,10 @@ export default({
        if(true) {
           alert('Comentario editado')
 
-        router.push('discusion/'+ idPost)
+          router.push("/forum")
+          setTimeout(() => {
+            router.push("/discusion/" + payload.idPost)
+          }, 200);
           //This.$router.push('/discusion'+idPost)
          // window.location.reload()
 

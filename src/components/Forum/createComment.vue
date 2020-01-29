@@ -81,10 +81,12 @@ export default {
     },
     editarHilo () {
       let payload = {
+        idPost: this.idPost,
         idHilo: this.editar.idHilo,
         imagen: this.file,
         comentario: this.comentario,
       }
+      console.log("Editar", payload)
       this.$store.dispatch('editarHilo', payload)
     }
   },
